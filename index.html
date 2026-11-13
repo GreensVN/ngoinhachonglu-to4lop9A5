@@ -228,50 +228,25 @@
                         <div class="flex flex-wrap items-center justify-between gap-2">
                             <div class="flex items-center gap-2">
                                 <span class="px-3 py-1 rounded-lg bg-sky-600 text-white font-extrabold text-xs uppercase tracking-wider shadow-sm">
-                                    📸 Hình ảnh sản phẩm hoàn thiện thực tế
+                                    📸 Hình ảnh sản phẩm thực tế
                                 </span>
-                                <span class="text-xs font-mono text-slate-500 hidden sm:inline">(hinhanh.jpg)</span>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <label for="localImagePicker" class="cursor-pointer text-xs font-semibold px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-sky-50 hover:border-sky-300 transition-colors">
-                                    📂 Chọn ảnh từ máy
-                                </label>
-                                <input id="localImagePicker" type="file" accept="image/*" class="hidden">
-                                <button id="openLightboxBtn" type="button" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-sky-100 text-sky-800 hover:bg-sky-200 transition-colors">
-                                    🔍 Phóng to ảnh
-                                </button>
-                            </div>
+                            <button id="openLightboxBtn" type="button" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-sky-100 text-sky-800 hover:bg-sky-200 transition-colors">
+                                🔍 Phóng to ảnh
+                            </button>
                         </div>
 
                         <!-- Khung chứa thẻ img liên kết trực tiếp hinhanh.jpg -->
-                        <div class="relative w-full rounded-xl overflow-hidden bg-sky-950/5 border border-sky-200 min-h-[240px] sm:min-h-[320px] flex items-center justify-center group">
+                        <div class="relative w-full rounded-xl overflow-hidden bg-sky-950/5 border border-sky-200 flex items-center justify-center group">
                             <img
                                 id="realProductImg"
                                 src="hinhanh.jpg"
-                                alt="Mô hình Ngôi nhà chống lũ hoàn thiện thực tế"
-                                class="w-full max-h-[440px] object-contain cursor-zoom-in transition-transform duration-300 group-hover:scale-[1.01]"
+                                alt="Mô hình Ngôi nhà chống lũ thực tế - Tổ 4 Lớp 9A5"
+                                class="w-full h-64 sm:h-80 object-cover object-center cursor-zoom-in transition-transform duration-300 hover:scale-[1.02]"
                             >
-
-                            <!-- Khung thông báo dự phòng nếu mở file HTML ở thư mục Downloads mà chưa để hinhanh.jpg bên cạnh -->
-                            <div id="imgFallbackNotice" class="hidden p-6 text-center max-w-md mx-auto space-y-3">
-                                <div class="w-12 h-12 rounded-2xl bg-sky-100 text-sky-700 flex items-center justify-center text-2xl mx-auto font-bold">
-                                    🖼️
-                                </div>
-                                <p class="font-bold text-slate-800 text-sm sm:text-base">
-                                    Đang liên kết với file <code class="px-1.5 py-0.5 rounded bg-sky-100 text-sky-800 font-mono">hinhanh.jpg</code> cùng thư mục GitHub Repo
-                                </p>
-                                <p class="text-xs text-slate-600 leading-relaxed">
-                                    Nếu bạn đang mở file HTML trực tiếp từ thư mục <strong>Downloads</strong> trên máy tính, hãy đặt file <strong>hinhanh.jpg</strong> vào cùng thư mục hoặc bấm nút bên dưới để hiển thị ảnh ngay:
-                                </p>
-                                <div class="pt-1">
-                                    <label for="localImagePicker" class="inline-flex items-center gap-1.5 cursor-pointer px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs shadow-sm transition-all">
-                                        <span>📂 Chọn file hinhanh.jpg từ máy tính</span>
-                                    </label>
-                                </div>
-                            </div>
                         </div>
                         <p class="text-xs text-slate-500 text-center italic">
-                            Mô hình sản phẩm STEM Ngôi nhà chống lũ thực tế của nhóm (Chạm vào ảnh để xem kích thước lớn).
+                            Mô hình sản phẩm STEM Ngôi nhà chống lũ thực tế của Tổ 4 – Lớp 9A5 (Chạm vào ảnh để xem kích thước lớn).
                         </p>
                     </div>
 
@@ -1797,10 +1772,8 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
 
-            // 0. Xử lý tải ảnh hinhanh.jpg thông minh (Hỗ trợ cả GitHub Pages, Raw GitHub & Mở file trực tiếp trên máy) + Lightbox
+            // 0. Xử lý hiển thị ảnh hinhanh.jpg từ GitHub & Phóng to ảnh (Lightbox)
             const realProductImg = document.getElementById("realProductImg");
-            const imgFallbackNotice = document.getElementById("imgFallbackNotice");
-            const localImagePicker = document.getElementById("localImagePicker");
             const openLightboxBtn = document.getElementById("openLightboxBtn");
             const imageLightboxModal = document.getElementById("imageLightboxModal");
             const lightboxModalImg = document.getElementById("lightboxModalImg");
@@ -1818,36 +1791,16 @@
                     if (fallbackIndex < fallbackUrls.length) {
                         realProductImg.src = fallbackUrls[fallbackIndex];
                         fallbackIndex++;
-                    } else {
-                        realProductImg.classList.add("hidden");
-                        if (imgFallbackNotice) imgFallbackNotice.classList.remove("hidden");
                     }
                 });
 
                 realProductImg.addEventListener("load", function () {
-                    realProductImg.classList.remove("hidden");
-                    if (imgFallbackNotice) imgFallbackNotice.classList.add("hidden");
                     if (lightboxModalImg) lightboxModalImg.src = realProductImg.src;
                 });
             }
 
-            if (localImagePicker) {
-                localImagePicker.addEventListener("change", function (e) {
-                    const file = e.target.files && e.target.files[0];
-                    if (!file) return;
-                    const reader = new FileReader();
-                    reader.onload = function (ev) {
-                        realProductImg.src = ev.target.result;
-                        realProductImg.classList.remove("hidden");
-                        if (imgFallbackNotice) imgFallbackNotice.classList.add("hidden");
-                        if (lightboxModalImg) lightboxModalImg.src = ev.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                });
-            }
-
             function openLightbox() {
-                if (!realProductImg || realProductImg.classList.contains("hidden")) return;
+                if (!realProductImg) return;
                 lightboxModalImg.src = realProductImg.src;
                 imageLightboxModal.classList.remove("hidden");
             }
