@@ -1,0 +1,2520 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chủ đề STEM: Ngôi Nhà Chống Lũ – Tổ 4 Lớp 9A5</title>
+    <!-- Tải Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tải Font Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        /* ==========================================================================
+           ĐIỂM CHẠM THÔNG TIN TRÊN MÔ HÌNH SỐ HÓA SVG (DIGITAL TWIN HOTSPOTS)
+           ========================================================================== */
+        .hotspot-pin {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            z-index: 30;
+            width: 2.2rem;
+            height: 2.2rem;
+            border-radius: 9999px;
+            background-color: #0284c7;
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 0.82rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2.5px solid #ffffff;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.45);
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hotspot-pin::after {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            border-radius: 9999px;
+            border: 2px solid #38bdf8;
+            animation: pulseRing 2s infinite;
+            pointer-events: none;
+        }
+
+        .hotspot-pin:hover,
+        .hotspot-pin.active {
+            background-color: #f59e0b;
+            transform: translate(-50%, -50%) scale(1.18);
+            box-shadow: 0 0 0 5px rgba(245, 158, 11, 0.35), 0 6px 16px rgba(245, 158, 11, 0.5);
+        }
+
+        .hotspot-pin.active::after {
+            border-color: #fbbf24;
+        }
+
+        @keyframes pulseRing {
+            0% {
+                transform: scale(0.9);
+                opacity: 0.85;
+            }
+            70% {
+                transform: scale(1.45);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1.45);
+                opacity: 0;
+            }
+        }
+
+        /* Hiệu ứng phát sáng bộ phận SVG khi chọn Hotspot */
+        .svg-part-highlight {
+            transition: filter 0.3s ease, transform 0.3s ease;
+        }
+        .svg-part-highlight.part-active {
+            filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.85));
+        }
+
+        /* Hiệu ứng mưa rơi trong chế độ Đêm mưa bão */
+        @keyframes rainFall {
+            0% {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.75;
+            }
+            100% {
+                transform: translateY(25px);
+                opacity: 0;
+            }
+        }
+        .rain-streak {
+            animation: rainFall 0.9s linear infinite;
+        }
+
+        /* Hiệu ứng mô phỏng mực nước lũ mượt mà */
+        .water-surface {
+            transition: height 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .floating-house-group {
+            transition: bottom 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* Lưới nền kỹ thuật CAD cho Bản vẽ 3 góc nhìn */
+        .cad-blueprint-grid {
+            background-color: #0f172a;
+            background-image: 
+                linear-gradient(to right, rgba(56, 189, 248, 0.08) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(56, 189, 248, 0.08) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-sky-600 selection:text-white">
+
+    <!-- ==================== THANH ĐIỀU HƯỚNG (NAVBAR) ==================== -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-sky-100 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 sm:gap-2.5">
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-sky-600 text-white shadow-sm">
+                    Chủ đề STEM
+                </span>
+                <span class="font-bold text-slate-800 text-sm sm:text-lg tracking-tight truncate">
+                    Ngôi Nhà Chống Lũ
+                </span>
+                <span class="hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-lg text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200">
+                    Tổ 4 – Lớp 9A5
+                </span>
+            </div>
+
+            <nav class="hidden lg:flex items-center gap-5 text-sm font-medium text-slate-600">
+                <a href="#mo-hinh-so-hoa" class="hover:text-sky-600 transition-colors font-semibold text-sky-700">Ảnh sản phẩm & Mô hình</a>
+                <a href="#y-tuong-vat-lieu" class="hover:text-sky-600 transition-colors">Ý tưởng & Vật liệu</a>
+                <a href="#thiet-ke-quy-trinh" class="hover:text-sky-600 transition-colors">Bản vẽ CAD & 5 Bước</a>
+                <a href="#phong-thi-nghiem-stem" class="hover:text-sky-600 transition-colors font-semibold text-teal-700">Phòng Lab STEM (3)</a>
+                <a href="#so-sanh-thuyet-trinh" class="hover:text-sky-600 transition-colors font-semibold text-amber-600">So sánh & Thuyết trình</a>
+                <a href="#cam-nang-an-toan" class="hover:text-sky-600 transition-colors">Cẩm nang & Túi khẩn cấp</a>
+            </nav>
+
+            <a href="#cam-nang-an-toan" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 transition-all shrink-0">
+                <span>🚨</span>
+                <span>Cứu hộ 112 / 114</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-16">
+
+        <!-- ==================== MỞ ĐẦU: HÌNH ẢNH SẢN PHẨM THỰC TẾ & MÔ HÌNH SỐ HÓA TƯƠNG TÁC ==================== -->
+        <section id="mo-hinh-so-hoa" class="bg-white rounded-3xl p-6 sm:p-10 border border-sky-100 shadow-sm">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- Cột trái: Giới thiệu tổng quan dự án -->
+                <div class="lg:col-span-5 space-y-5 lg:sticky lg:top-24">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-sky-50 border border-sky-200 text-sky-700 font-bold text-xs sm:text-sm">
+                            <span>🌱 SẢN PHẨM KHOA HỌC – KỸ THUẬT STEM</span>
+                        </div>
+                        <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 font-extrabold text-xs sm:text-sm">
+                            <span>👥 Tổ 4 – Lớp 9A5</span>
+                        </div>
+                    </div>
+
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-sky-950 tracking-tight leading-tight">
+                        NGÔI NHÀ CHỐNG LŨ
+                    </h1>
+
+                    <div class="inline-block bg-gradient-to-r from-sky-600 to-teal-600 text-white rounded-xl px-4 py-2.5 shadow-sm">
+                        <p class="font-semibold text-sm sm:text-base">
+                            “Sáng tạo hôm nay – Cuộc sống an toàn hơn ngày mai!”
+                        </p>
+                    </div>
+
+                    <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
+                        Mô hình ngôi nhà chống lũ tích hợp đồng bộ các giải pháp kỹ thuật thực tiễn: hệ khung nhà sàn cao, dàn phao nổi bằng vỏ chai nhựa tái chế theo nguyên lý Ác-si-mét, mái dốc gắn pin mặt trời, bể chứa nước sạch trên cao và thuyền cứu hộ dân dụng.
+                    </p>
+
+                    <!-- Thông điệp sản phẩm nổi bật -->
+                    <div class="bg-amber-50/90 border border-amber-200 rounded-2xl p-4">
+                        <p class="text-xs font-bold uppercase tracking-wider text-amber-800 mb-1">💡 Thông điệp sản phẩm</p>
+                        <p class="text-sm font-bold text-slate-800 italic">
+                            “Chủ động phòng tránh lũ lụt – Bảo vệ cuộc sống – Cùng xây dựng cộng đồng an toàn hơn!”
+                        </p>
+                    </div>
+
+                    <!-- 3 chỉ số cốt lõi -->
+                    <div class="grid grid-cols-3 gap-2.5 pt-1">
+                        <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-center">
+                            <p class="text-lg sm:text-xl font-extrabold text-sky-700">7+</p>
+                            <p class="text-[11px] text-slate-500 font-medium">Giải pháp kỹ thuật</p>
+                        </div>
+                        <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-center">
+                            <p class="text-lg sm:text-xl font-extrabold text-teal-600">88%</p>
+                            <p class="text-[11px] text-slate-500 font-medium">Vật liệu tái chế</p>
+                        </div>
+                        <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-center">
+                            <p class="text-lg sm:text-xl font-extrabold text-amber-600">3.5m</p>
+                            <p class="text-[11px] text-slate-500 font-medium">Thích ứng lũ cao</p>
+                        </div>
+                    </div>
+
+                    <div class="pt-1 flex flex-wrap gap-2.5">
+                        <a href="#phong-thi-nghiem-stem" class="px-4 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-semibold text-xs sm:text-sm shadow-sm transition-all">
+                            🌊 Mở Phòng Lab Mô Phỏng Lũ
+                        </a>
+                        <a href="#so-sanh-thuyet-trinh" class="px-4 py-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 font-semibold text-xs sm:text-sm border border-amber-200 transition-all">
+                            🎤 Bài Thuyết Trình (Tổ 4 - 9A5)
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Cột phải: KHUNG ẢNH SẢN PHẨM THỰC TẾ (hinhanh.jpg) + MÔ HÌNH SỐ HÓA TƯƠNG TÁC SVG -->
+                <div class="lg:col-span-7 space-y-6">
+
+                    <!-- [PHẦN BỔ SUNG]: KHUNG HÌNH ẢNH SẢN PHẨM THỰC TẾ LIÊN KẾT FILE hinhanh.jpg CÙNG REPO GITHUB -->
+                    <div id="hinh-anh-thuc-te" class="bg-slate-50 rounded-2xl p-4 sm:p-5 border-2 border-sky-200 shadow-sm space-y-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex items-center gap-2">
+                                <span class="px-3 py-1 rounded-lg bg-sky-600 text-white font-extrabold text-xs uppercase tracking-wider shadow-sm">
+                                    📸 Hình ảnh sản phẩm hoàn thiện thực tế
+                                </span>
+                                <span class="text-xs font-mono text-slate-500 hidden sm:inline">(hinhanh.jpg)</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <label for="localImagePicker" class="cursor-pointer text-xs font-semibold px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-sky-50 hover:border-sky-300 transition-colors">
+                                    📂 Chọn ảnh từ máy
+                                </label>
+                                <input id="localImagePicker" type="file" accept="image/*" class="hidden">
+                                <button id="openLightboxBtn" type="button" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-sky-100 text-sky-800 hover:bg-sky-200 transition-colors">
+                                    🔍 Phóng to ảnh
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Khung chứa thẻ img liên kết trực tiếp hinhanh.jpg -->
+                        <div class="relative w-full rounded-xl overflow-hidden bg-sky-950/5 border border-sky-200 min-h-[240px] sm:min-h-[320px] flex items-center justify-center group">
+                            <img
+                                id="realProductImg"
+                                src="hinhanh.jpg"
+                                alt="Mô hình Ngôi nhà chống lũ hoàn thiện thực tế"
+                                class="w-full max-h-[440px] object-contain cursor-zoom-in transition-transform duration-300 group-hover:scale-[1.01]"
+                            >
+
+                            <!-- Khung thông báo dự phòng nếu mở file HTML ở thư mục Downloads mà chưa để hinhanh.jpg bên cạnh -->
+                            <div id="imgFallbackNotice" class="hidden p-6 text-center max-w-md mx-auto space-y-3">
+                                <div class="w-12 h-12 rounded-2xl bg-sky-100 text-sky-700 flex items-center justify-center text-2xl mx-auto font-bold">
+                                    🖼️
+                                </div>
+                                <p class="font-bold text-slate-800 text-sm sm:text-base">
+                                    Đang liên kết với file <code class="px-1.5 py-0.5 rounded bg-sky-100 text-sky-800 font-mono">hinhanh.jpg</code> cùng thư mục GitHub Repo
+                                </p>
+                                <p class="text-xs text-slate-600 leading-relaxed">
+                                    Nếu bạn đang mở file HTML trực tiếp từ thư mục <strong>Downloads</strong> trên máy tính, hãy đặt file <strong>hinhanh.jpg</strong> vào cùng thư mục hoặc bấm nút bên dưới để hiển thị ảnh ngay:
+                                </p>
+                                <div class="pt-1">
+                                    <label for="localImagePicker" class="inline-flex items-center gap-1.5 cursor-pointer px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs shadow-sm transition-all">
+                                        <span>📂 Chọn file hinhanh.jpg từ máy tính</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-500 text-center italic">
+                            Mô hình sản phẩm STEM Ngôi nhà chống lũ thực tế của nhóm (Chạm vào ảnh để xem kích thước lớn).
+                        </p>
+                    </div>
+
+                    <!-- Thanh điều khiển chế độ Môi trường (Ngày / Đêm mưa bão) & Bật/tắt điểm chạm -->
+                    <div class="flex flex-wrap items-center justify-between gap-2 bg-slate-50 px-3.5 py-2.5 rounded-2xl border border-slate-200">
+                        <div class="flex items-center gap-1.5">
+                            <button id="envDayBtn" type="button" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-sky-600 text-white shadow-sm transition-all">
+                                ☀️ Ban ngày (Bình thường)
+                            </button>
+                            <button id="envStormBtn" type="button" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:border-sky-300 transition-all">
+                                ⛈️ Đêm mưa bão (Bật đèn năng lượng)
+                            </button>
+                        </div>
+                        <button id="toggleHotspotsBtn" type="button" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-white border border-sky-200 text-sky-700 hover:bg-sky-50 transition-colors">
+                            Ẩn điểm chạm (1-5)
+                        </button>
+                    </div>
+
+                    <!-- Khung vẽ Mô hình Số hóa SVG chi tiết cao -->
+                    <div class="relative w-full aspect-[16/11] rounded-2xl overflow-hidden border-2 border-sky-200 shadow-inner select-none bg-sky-100">
+                        <svg id="digitalTwinSvg" class="w-full h-full" viewBox="0 0 800 550" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <!-- Bầu trời ban ngày -->
+                                <linearGradient id="skyDayGrad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#bae6fd"/>
+                                    <stop offset="65%" stop-color="#e0f2fe"/>
+                                    <stop offset="100%" stop-color="#f0f9ff"/>
+                                </linearGradient>
+                                <!-- Bầu trời đêm mưa bão -->
+                                <linearGradient id="skyStormGrad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#0f172a"/>
+                                    <stop offset="60%" stop-color="#1e293b"/>
+                                    <stop offset="100%" stop-color="#334155"/>
+                                </linearGradient>
+                                <!-- Mặt nước sông/lũ -->
+                                <linearGradient id="waterGrad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#0284c7" stop-opacity="0.85"/>
+                                    <stop offset="100%" stop-color="#0369a1" stop-opacity="0.98"/>
+                                </linearGradient>
+                                <!-- Mái ngói đỏ -->
+                                <linearGradient id="roofGrad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#e11d48"/>
+                                    <stop offset="100%" stop-color="#9f1239"/>
+                                </linearGradient>
+                                <!-- Quầng sáng đèn năng lượng mặt trời -->
+                                <radialGradient id="warmGlow" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stop-color="#fde047" stop-opacity="0.9"/>
+                                    <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+                                </radialGradient>
+                            </defs>
+
+                            <!-- 1. Lớp nền bầu trời -->
+                            <rect id="twinSkyRect" x="0" y="0" width="800" height="410" fill="url(#skyDayGrad)"/>
+
+                            <!-- Mặt trời (Hiển thị ban ngày) -->
+                            <g id="twinSunGroup">
+                                <circle cx="115" cy="82" r="36" fill="#facc15" fill-opacity="0.25"/>
+                                <circle cx="115" cy="82" r="24" fill="#eab308"/>
+                                <text x="162" y="87" fill="#0369a1" font-size="12" font-weight="bold">Nắng nạp điện mặt trời</text>
+                            </g>
+
+                            <!-- Mây mưa & Hạt mưa rơi (Hiển thị khi bật Đêm mưa bão) -->
+                            <g id="twinStormGroup" class="hidden">
+                                <!-- Đám mây đen -->
+                                <path d="M80 75 Q110 45 145 65 Q180 40 215 70 Q245 75 235 100 L70 100 Q50 85 80 75 Z" fill="#475569"/>
+                                <path d="M480 65 Q515 35 555 58 Q595 35 630 68 Q660 72 645 96 L470 96 Q450 80 480 65 Z" fill="#334155"/>
+                                <!-- Tia chớp cảnh báo -->
+                                <polygon points="155,98 135,135 152,135 140,172 175,126 156,126" fill="#fde047"/>
+                                <!-- Hạt mưa rơi -->
+                                <g stroke="#7dd3fc" stroke-width="2" stroke-linecap="round" opacity="0.65" class="rain-streak">
+                                    <line x1="95" y1="115" x2="80" y2="155"/>
+                                    <line x1="190" y1="120" x2="175" y2="160"/>
+                                    <line x1="290" y1="105" x2="275" y2="145"/>
+                                    <line x1="390" y1="110" x2="375" y2="150"/>
+                                    <line x1="510" y1="115" x2="495" y2="155"/>
+                                    <line x1="610" y1="110" x2="595" y2="150"/>
+                                    <line x1="700" y1="125" x2="685" y2="165"/>
+                                    <line x1="140" y1="210" x2="125" y2="250"/>
+                                    <line x1="650" y1="205" x2="635" y2="245"/>
+                                </g>
+                            </g>
+
+                            <!-- 2. Đế mô hình & Thảm cỏ cảnh quan hai bên -->
+                            <rect x="25" y="395" width="750" height="135" rx="16" fill="#0f766e"/>
+                            <!-- Mặt nước mô phỏng sông/lũ quanh chân nhà -->
+                            <rect x="35" y="400" width="730" height="118" rx="12" fill="url(#waterGrad)"/>
+                            <!-- Đường gợn sóng nước -->
+                            <path d="M55 435 Q 115 422, 175 435 T 295 435 T 415 435 T 535 435 T 655 435 T 745 435" stroke="#7dd3fc" stroke-width="2.5" fill="none" opacity="0.65"/>
+                            <path d="M75 485 Q 145 473, 215 485 T 355 485 T 495 485 T 635 485 T 735 485" stroke="#bae6fd" stroke-width="2" fill="none" opacity="0.5"/>
+
+                            <!-- Đảo cỏ bên trái + Cây xanh + Hàng rào + Bảng tuyên truyền -->
+                            <path d="M35 415 Q 145 395, 250 425 L 250 505 L 35 505 Z" fill="#15803d"/>
+                            <!-- Cây mô hình bên trái -->
+                            <rect x="74" y="315" width="12" height="95" fill="#78350f"/>
+                            <circle cx="80" cy="295" r="38" fill="#16a34a"/>
+                            <circle cx="58" cy="312" r="28" fill="#15803d"/>
+                            <circle cx="102" cy="312" r="28" fill="#22c55e"/>
+
+                            <!-- BẢNG KHẨU HIỆU TUYÊN TRUYỀN AN TOÀN (Mặt trước bên trái) -->
+                            <g id="svgPartSign">
+                                <rect x="148" y="388" width="8" height="62" fill="#78350f"/>
+                                <rect x="198" y="388" width="8" height="62" fill="#78350f"/>
+                                <rect x="112" y="295" width="130" height="98" rx="8" fill="#fefce8" stroke="#b45309" stroke-width="4"/>
+                                <text x="177" y="318" text-anchor="middle" fill="#0369a1" font-size="11" font-weight="800">CHUNG TAY</text>
+                                <text x="177" y="335" text-anchor="middle" fill="#be123c" font-size="11" font-weight="800">PHÒNG, TRÁNH</text>
+                                <text x="177" y="352" text-anchor="middle" fill="#be123c" font-size="12" font-weight="800">LŨ LỤT</text>
+                                <text x="177" y="369" text-anchor="middle" fill="#047857" font-size="10.5" font-weight="800">VÌ CUỘC SỐNG</text>
+                                <text x="177" y="384" text-anchor="middle" fill="#047857" font-size="11" font-weight="800">AN TOÀN!</text>
+                            </g>
+
+                            <!-- Cây xanh cảnh quan bên phải -->
+                            <rect x="695" y="305" width="12" height="105" fill="#78350f"/>
+                            <circle cx="701" cy="285" r="36" fill="#16a34a"/>
+                            <circle cx="678" cy="305" r="26" fill="#15803d"/>
+                            <circle cx="722" cy="305" r="26" fill="#22c55e"/>
+
+                            <!-- 3. HỆ CỘT TRỤ NHÀ SÀN CHẮC CHẮN (Que gỗ, thanh tre) -->
+                            <g id="svgPartStilts">
+                                <rect x="275" y="325" width="14" height="125" fill="#92400e" stroke="#451a03" stroke-width="2"/>
+                                <rect x="345" y="325" width="12" height="120" fill="#78350f"/>
+                                <rect x="475" y="325" width="12" height="120" fill="#78350f"/>
+                                <rect x="545" y="325" width="14" height="125" fill="#92400e" stroke="#451a03" stroke-width="2"/>
+                                <!-- Thanh giằng chéo gia cố cột -->
+                                <line x1="289" y1="345" x2="345" y2="395" stroke="#b45309" stroke-width="5"/>
+                                <line x1="545" y1="345" x2="487" y2="395" stroke="#b45309" stroke-width="5"/>
+                            </g>
+
+                            <!-- 4. BỘ PHẬN HOTSPOT 4: HỆ THỐNG PHAO NỔI BẰNG CHAI NHỰA & XỐP DƯỚI SÀN -->
+                            <g id="svgPart4" class="svg-part-highlight">
+                                <!-- Lớp đệm mút xốp chịu lực -->
+                                <rect x="285" y="330" width="260" height="14" rx="4" fill="#f8fafc" stroke="#38bdf8" stroke-width="2"/>
+                                <!-- Dàn 6 vỏ chai nhựa xanh gắn song song dưới gầm sàn -->
+                                <g fill="#0284c7" stroke="#0369a1" stroke-width="2.5">
+                                    <rect x="292" y="344" width="36" height="42" rx="16"/>
+                                    <rect x="334" y="344" width="36" height="42" rx="16"/>
+                                    <rect x="376" y="344" width="36" height="42" rx="16"/>
+                                    <rect x="418" y="344" width="36" height="42" rx="16"/>
+                                    <rect x="460" y="344" width="36" height="42" rx="16"/>
+                                    <rect x="502" y="344" width="36" height="42" rx="16"/>
+                                </g>
+                                <!-- Nắp chai nhựa đỏ/vàng đậy kín khí -->
+                                <g fill="#ef4444">
+                                    <circle cx="310" cy="365" r="5.5"/>
+                                    <circle cx="352" cy="365" r="5.5"/>
+                                    <circle cx="394" cy="365" r="5.5"/>
+                                    <circle cx="436" cy="365" r="5.5"/>
+                                    <circle cx="478" cy="365" r="5.5"/>
+                                    <circle cx="520" cy="365" r="5.5"/>
+                                </g>
+                            </g>
+
+                            <!-- 5. BỘ PHẬN HOTSPOT 3: SÀN NHÀ SÀN, THÂN NHÀ & KHU VỰC TRÁNH LŨ TẦNG CAO -->
+                            <g id="svgPart3" class="svg-part-highlight">
+                                <!-- Sàn gỗ nhà sàn rộng rãi -->
+                                <rect x="255" y="312" width="335" height="18" rx="4" fill="#b45309" stroke="#78350f" stroke-width="2.5"/>
+                                <!-- Thân ngôi nhà bằng bìa carton & que gỗ -->
+                                <rect x="285" y="182" width="245" height="130" fill="#fef3c7" stroke="#92400e" stroke-width="3"/>
+                                <!-- Các đường vân gỗ trang trí mặt tiền -->
+                                <line x1="285" y1="215" x2="530" y2="215" stroke="#fde68a" stroke-width="2"/>
+                                <line x1="285" y1="250" x2="530" y2="250" stroke="#fde68a" stroke-width="2"/>
+                                <line x1="285" y1="285" x2="530" y2="285" stroke="#fde68a" stroke-width="2"/>
+
+                                <!-- Cửa sổ chống bão bên trái (Sáng đèn khi bật chế độ Đêm mưa bão) -->
+                                <rect id="twinWindowLeft" x="312" y="218" width="52" height="52" rx="4" fill="#bae6fd" stroke="#0f766e" stroke-width="3.5"/>
+                                <line x1="338" y1="218" x2="338" y2="270" stroke="#0f766e" stroke-width="2.5"/>
+                                <line x1="312" y1="244" x2="364" y2="244" stroke="#0f766e" stroke-width="2.5"/>
+
+                                <!-- Cửa chính ra vào hiên nhà -->
+                                <rect x="392" y="212" width="54" height="100" rx="3" fill="#92400e" stroke="#451a03" stroke-width="3"/>
+                                <rect id="twinDoorGlass" x="402" y="224" width="34" height="36" rx="2" fill="#e0f2fe"/>
+                                <circle cx="438" cy="268" r="3.5" fill="#fbbf24"/>
+
+                                <!-- Cửa sổ bên phải -->
+                                <rect id="twinWindowRight" x="466" y="218" width="44" height="52" rx="4" fill="#bae6fd" stroke="#0f766e" stroke-width="3.5"/>
+                                <line x1="488" y1="218" x2="488" y2="270" stroke="#0f766e" stroke-width="2.5"/>
+
+                                <!-- Lan can bảo vệ quanh hiên nhà -->
+                                <g stroke="#d97706" stroke-width="4" stroke-linecap="round">
+                                    <line x1="262" y1="278" x2="390" y2="278"/>
+                                    <line x1="450" y1="278" x2="582" y2="278"/>
+                                    <line x1="265" y1="278" x2="265" y2="312"/>
+                                    <line x1="295" y1="278" x2="295" y2="312"/>
+                                    <line x1="325" y1="278" x2="325" y2="312"/>
+                                    <line x1="355" y1="278" x2="355" y2="312"/>
+                                    <line x1="480" y1="278" x2="480" y2="312"/>
+                                    <line x1="515" y1="278" x2="515" y2="312"/>
+                                    <line x1="550" y1="278" x2="550" y2="312"/>
+                                    <line x1="580" y1="278" x2="580" y2="312"/>
+                                </g>
+
+                                <!-- Đèn hiên năng lượng mặt trời (Phát sáng rực rỡ vào ban đêm) -->
+                                <circle id="twinPorchLightGlow" cx="419" cy="198" r="28" fill="url(#warmGlow)" class="hidden"/>
+                                <circle id="twinPorchLightBulb" cx="419" cy="198" r="7" fill="#fef08a" stroke="#ca8a04" stroke-width="2"/>
+                            </g>
+
+                            <!-- 6. BỘ PHẬN HOTSPOT 1: HỆ MÁI DỐC THOÁT NƯỚC TỐT & TẤM PIN MẶT TRỜI -->
+                            <g id="svgPart1" class="svg-part-highlight part-active">
+                                <!-- Mái ngói đỏ độ dốc lớn 40 độ -->
+                                <polygon points="240,185 408,68 575,185" fill="url(#roofGrad)" stroke="#881337" stroke-width="3.5"/>
+                                <!-- Đường sóng ngói kỹ thuật -->
+                                <line x1="295" y1="147" x2="520" y2="147" stroke="#fda4af" stroke-width="1.5" stroke-dasharray="10 6"/>
+                                <line x1="345" y1="112" x2="470" y2="112" stroke="#fda4af" stroke-width="1.5" stroke-dasharray="10 6"/>
+                                <!-- Cửa thông gió tầng áp mái (Gác tránh lũ khẩn cấp) -->
+                                <circle id="twinAtticWindow" cx="375" cy="138" r="16" fill="#fef08a" stroke="#78350f" stroke-width="3"/>
+                                <line x1="359" y1="138" x2="391" y2="138" stroke="#78350f" stroke-width="2"/>
+                                <line x1="375" y1="122" x2="375" y2="154" stroke="#78350f" stroke-width="2"/>
+
+                                <!-- Tấm Pin Năng Lượng Mặt Trời gắn trên mái dốc -->
+                                <g transform="translate(425, 96) skewX(24)">
+                                    <rect x="0" y="0" width="78" height="48" rx="4" fill="#0f172a" stroke="#e2e8f0" stroke-width="3"/>
+                                    <rect x="4" y="4" width="70" height="40" fill="#0284c7"/>
+                                    <line x1="27" y1="4" x2="27" y2="44" stroke="#bae6fd" stroke-width="1.5"/>
+                                    <line x1="51" y1="4" x2="51" y2="44" stroke="#bae6fd" stroke-width="1.5"/>
+                                    <line x1="4" y1="24" x2="74" y2="24" stroke="#bae6fd" stroke-width="1.5"/>
+                                </g>
+                            </g>
+
+                            <!-- 7. BỘ PHẬN HOTSPOT 2: BỂ CHỨA NƯỚC SẠCH TRÊN CAO -->
+                            <g id="svgPart2" class="svg-part-highlight">
+                                <!-- Giàn gỗ đỡ bể nước trên cao -->
+                                <rect x="550" y="252" width="72" height="10" rx="2" fill="#92400e" stroke="#451a03" stroke-width="2"/>
+                                <line x1="562" y1="262" x2="562" y2="315" stroke="#78350f" stroke-width="7"/>
+                                <line x1="608" y1="262" x2="608" y2="315" stroke="#78350f" stroke-width="7"/>
+                                <!-- Bể chứa nước xanh bằng vỏ bình nhựa -->
+                                <rect x="560" y="182" width="52" height="70" rx="10" fill="#2563eb" stroke="#1e3a8a" stroke-width="3"/>
+                                <rect x="574" y="172" width="24" height="10" rx="3" fill="#1d4ed8"/>
+                                <line x1="560" y1="205" x2="612" y2="205" stroke="#93c5fd" stroke-width="2"/>
+                                <line x1="560" y1="228" x2="612" y2="228" stroke="#93c5fd" stroke-width="2"/>
+                                <text x="586" y="221" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="800">H₂O</text>
+                                <!-- Ống thu nước mưa từ mái vào bể -->
+                                <path d="M565 180 L586 180" stroke="#38bdf8" stroke-width="4"/>
+                            </g>
+
+                            <!-- 8. BỘ PHẬN HOTSPOT 5: CẦU THANG, CẦU TẠM & THUYỀN CỨU HỘ DÂN DỤNG -->
+                            <g id="svgPart5" class="svg-part-highlight">
+                                <!-- Cầu thang gỗ dẫn từ hiên nhà xuống cầu tạm -->
+                                <polygon points="395,320 445,320 475,425 365,425" fill="#d97706" stroke="#78350f" stroke-width="2.5"/>
+                                <line x1="390" y1="340" x2="450" y2="340" stroke="#fef3c7" stroke-width="3"/>
+                                <line x1="384" y1="360" x2="456" y2="360" stroke="#fef3c7" stroke-width="3"/>
+                                <line x1="378" y1="380" x2="462" y2="380" stroke="#fef3c7" stroke-width="3"/>
+                                <line x1="372" y1="400" x2="468" y2="400" stroke="#fef3c7" stroke-width="3"/>
+
+                                <!-- Bến cầu tạm nổi trước cầu thang -->
+                                <rect x="445" y="422" width="95" height="14" rx="3" fill="#b45309" stroke="#451a03" stroke-width="2"/>
+
+                                <!-- Thuyền cứu hộ dân dụng neo sẵn bên cầu tạm -->
+                                <g transform="translate(535, 428)">
+                                    <polygon points="0,12 125,12 102,44 22,44" fill="#92400e" stroke="#451a03" stroke-width="3"/>
+                                    <line x1="24" y1="22" x2="100" y2="22" stroke="#f59e0b" stroke-width="4"/>
+                                    <!-- Mái chèo gỗ -->
+                                    <line x1="48" y1="2" x2="88" y2="52" stroke="#fbbf24" stroke-width="4.5" stroke-linecap="round"/>
+                                    <!-- Phao tròn cứu sinh gắn trên thuyền -->
+                                    <circle cx="28" cy="24" r="8" fill="#ef4444" stroke="#ffffff" stroke-width="2.5"/>
+                                    <text x="64" y="38" text-anchor="middle" fill="#fef3c7" font-size="10" font-weight="bold">CỨU HỘ</text>
+                                </g>
+                            </g>
+                        </svg>
+
+                        <!-- LỚP PHỦ 5 ĐIỂM CHẠM TƯƠNG TÁC (HOTSPOTS 1 - 5) -->
+                        <div id="hotspotsContainer" class="absolute inset-0 z-30 pointer-events-none">
+                            <!-- (1) Mái dốc & Pin năng lượng mặt trời -->
+                            <button type="button" data-hotspot="1" style="top: 23%; left: 53%;" class="hotspot-pin active pointer-events-auto" aria-label="Điểm chạm 1">1</button>
+                            <!-- (2) Bể chứa nước sạch trên cao -->
+                            <button type="button" data-hotspot="2" style="top: 39%; left: 73%;" class="hotspot-pin pointer-events-auto" aria-label="Điểm chạm 2">2</button>
+                            <!-- (3) Khu vực tránh lũ an toàn (Tầng cao) -->
+                            <button type="button" data-hotspot="3" style="top: 46%; left: 44%;" class="hotspot-pin pointer-events-auto" aria-label="Điểm chạm 3">3</button>
+                            <!-- (4) Hệ thống phao nổi bằng chai nhựa -->
+                            <button type="button" data-hotspot="4" style="top: 66%; left: 48%;" class="hotspot-pin pointer-events-auto" aria-label="Điểm chạm 4">4</button>
+                            <!-- (5) Thuyền cứu hộ dân dụng & Cầu thang -->
+                            <button type="button" data-hotspot="5" style="top: 81%; left: 73%;" class="hotspot-pin pointer-events-auto" aria-label="Điểm chạm 5">5</button>
+                        </div>
+                    </div>
+
+                    <!-- Thẻ hiển thị thông tin chi tiết của Điểm chạm (1 - 5) -->
+                    <div id="hotspotDetailCard" class="bg-sky-50/90 border border-sky-200 rounded-2xl p-4 sm:p-5 transition-all">
+                        <div class="flex items-start gap-3">
+                            <span id="hotspotBadge" class="w-7 h-7 rounded-full bg-amber-500 text-white font-extrabold text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
+                                1
+                            </span>
+                            <div class="space-y-1">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <h3 id="hotspotTitle" class="font-bold text-sky-950 text-sm sm:text-base">
+                                        Hệ thống mái dốc thoát nước & Pin năng lượng mặt trời
+                                    </h3>
+                                    <span id="hotspotTag" class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-sky-100 text-sky-800">
+                                        Vật liệu: Bìa carton, giấy màu & tấm pin mô hình
+                                    </span>
+                                </div>
+                                <p id="hotspotDesc" class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                                    Mái thiết kế độ dốc 40° giúp thoát nước mưa cực nhanh, giảm tải trọng lên khung nhà sàn; tích hợp tấm pin năng lượng mặt trời cung cấp điện chiếu sáng độc lập khi mất điện lưới.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Dải nút chọn nhanh 5 bộ phận -->
+                        <div class="mt-3 pt-3 border-t border-sky-200/70 flex flex-wrap items-center gap-1.5">
+                            <span class="text-xs text-slate-500 mr-1 font-medium">Khám phá nhanh:</span>
+                            <button type="button" data-hotspot-btn="1" class="hotspot-quick-btn text-xs font-semibold px-2.5 py-1 rounded-lg bg-sky-600 text-white transition-all">1. Mái dốc & Pin mặt trời</button>
+                            <button type="button" data-hotspot-btn="2" class="hotspot-quick-btn text-xs font-semibold px-2.5 py-1 rounded-lg bg-white text-slate-600 border border-slate-200 hover:border-sky-300 transition-all">2. Bể nước trên cao</button>
+                            <button type="button" data-hotspot-btn="3" class="hotspot-quick-btn text-xs font-semibold px-2.5 py-1 rounded-lg bg-white text-slate-600 border border-slate-200 hover:border-sky-300 transition-all">3. Tầng tránh lũ</button>
+                            <button type="button" data-hotspot-btn="4" class="hotspot-quick-btn text-xs font-semibold px-2.5 py-1 rounded-lg bg-white text-slate-600 border border-slate-200 hover:border-sky-300 transition-all">4. Phao chai nhựa</button>
+                            <button type="button" data-hotspot-btn="5" class="hotspot-quick-btn text-xs font-semibold px-2.5 py-1 rounded-lg bg-white text-slate-600 border border-slate-200 hover:border-sky-300 transition-all">5. Thuyền cứu hộ</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==================== MỤC 1 & 2: XÁC ĐỊNH Ý TƯỞNG & VẬT LIỆU TÁI CHẾ STEM XANH ==================== -->
+        <section id="y-tuong-vat-lieu" class="space-y-10">
+            <!-- Khối 1: Xác định ý tưởng & 7 Giải pháp kỹ thuật -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Cột 1: 5 Tiêu chí xác định ý tưởng -->
+                <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="w-8 h-8 rounded-full bg-amber-500 text-white font-extrabold flex items-center justify-center text-sm shrink-0">1</span>
+                            <h2 class="text-xl font-extrabold text-slate-800 uppercase tracking-tight">Xác định ý tưởng thiết kế</h2>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-5 leading-relaxed">
+                            Nhóm thảo luận và lựa chọn các giải pháp làm mô hình ngôi nhà chống lũ đảm bảo 5 tiêu chí cốt lõi:
+                        </p>
+                        <ul class="space-y-3.5 text-sm sm:text-base text-slate-700">
+                            <li class="flex items-start gap-3">
+                                <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">✓</span>
+                                <span><strong>An toàn vượt trội:</strong> Ngôi nhà luôn an toàn khi mực nước lũ dâng cao.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">✓</span>
+                                <span><strong>Kỹ thuật khả thi:</strong> Kết hợp các giải pháp kỹ thuật phù hợp, cân bằng trọng tâm tốt.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">✓</span>
+                                <span><strong>Vật liệu dễ tìm:</strong> Sử dụng vật liệu tái chế đơn giản, tiết kiệm chi phí.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">✓</span>
+                                <span><strong>Tính thực tiễn cao:</strong> Gần gũi với đặc điểm địa hình và đời sống người dân vùng lũ.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">✓</span>
+                                <span><strong>Lan tỏa kiến thức:</strong> Trang trí trực quan và tích hợp nội dung tuyên truyền phòng, tránh lũ lụt.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                        <span>Thảo luận nhóm & định hình giải pháp</span>
+                        <span class="font-bold text-sky-700">5/5 Tiêu chí đạt chuẩn STEM</span>
+                    </div>
+                </div>
+
+                <!-- Cột 2: 7 Giải pháp kỹ thuật tích hợp -->
+                <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="w-8 h-8 rounded-full bg-sky-600 text-white font-extrabold flex items-center justify-center text-sm shrink-0">★</span>
+                            <h2 class="text-xl font-extrabold text-slate-800 uppercase tracking-tight">7 Giải pháp kỹ thuật trong mô hình</h2>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-4 leading-relaxed">
+                            Sự phối hợp đồng bộ giúp ngôi nhà ứng phó linh hoạt với cả lũ nhỏ lẫn lũ lớn bất ngờ:
+                        </p>
+                        <div class="grid grid-cols-1 gap-2.5 text-sm">
+                            <div class="p-3 rounded-xl bg-sky-50/70 border border-sky-100 flex items-center gap-3">
+                                <span class="w-2 h-2 rounded-full bg-sky-600 shrink-0"></span>
+                                <span class="font-medium text-slate-700"><strong>Nhà sàn cao & Cột chắc chắn:</strong> Tránh ngập khi nước dâng mức thấp và định vị nhà.</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-sky-50/70 border border-sky-100 flex items-center gap-3">
+                                <span class="w-2 h-2 rounded-full bg-sky-600 shrink-0"></span>
+                                <span class="font-medium text-slate-700"><strong>Nền nổi bằng phao chai nhựa:</strong> Tự động nâng ngôi nhà nổi lên khi lũ vượt đỉnh cột.</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-sky-50/70 border border-sky-100 flex items-center gap-3">
+                                <span class="w-2 h-2 rounded-full bg-sky-600 shrink-0"></span>
+                                <span class="font-medium text-slate-700"><strong>Mái dốc thoát nước tốt:</strong> Chống đọng nước mưa và lắp đặt tấm pin mặt trời.</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-sky-50/70 border border-sky-100 flex items-center gap-3">
+                                <span class="w-2 h-2 rounded-full bg-sky-600 shrink-0"></span>
+                                <span class="font-medium text-slate-700"><strong>Khu vực tránh lũ (tầng cao):</strong> Không gian sơ tán khẩn cấp an toàn cho gia đình.</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-sky-50/70 border border-sky-100 flex items-center gap-3">
+                                <span class="w-2 h-2 rounded-full bg-sky-600 shrink-0"></span>
+                                <span class="font-medium text-slate-700"><strong>Thuyền cứu hộ & Cầu tạm:</strong> Chủ động di chuyển và tiếp nhận cứu trợ khi bị cô lập.</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-sky-50/70 border border-sky-100 flex items-center gap-3">
+                                <span class="w-2 h-2 rounded-full bg-sky-600 shrink-0"></span>
+                                <span class="font-medium text-slate-700"><strong>Bể chứa nước & Lương thực trên cao:</strong> Không bị ô nhiễm bởi nước lũ đục bên dưới.</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-sky-50/70 border border-sky-100 flex items-center gap-3">
+                                <span class="w-2 h-2 rounded-full bg-sky-600 shrink-0"></span>
+                                <span class="font-medium text-slate-700"><strong>Bảng tuyên truyền an toàn:</strong> Nhắc nhở cộng đồng chủ động phòng, tránh thiên tai.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                        <span>Bảo vệ kép: Cột nhà sàn + Đế phao nổi</span>
+                        <span class="font-bold text-teal-700">Tích hợp 7 hạng mục</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Khối 2: Chuẩn bị 8 nhóm vật liệu & Chỉ số STEM Xanh 88% -->
+            <div class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+                    <div class="flex items-center gap-3">
+                        <span class="w-9 h-9 rounded-full bg-sky-600 text-white font-extrabold flex items-center justify-center text-sm shrink-0">2</span>
+                        <div>
+                            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-800 uppercase tracking-tight">Chuẩn bị vật liệu & Chỉ số STEM Xanh</h2>
+                            <p class="text-xs sm:text-sm text-slate-500">8 nhóm vật liệu gần gũi, dễ gia công và tái sinh rác thải nhựa thành giải pháp cứu hộ</p>
+                        </div>
+                    </div>
+                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-extrabold bg-teal-50 text-teal-800 border border-teal-200">
+                        ♻️ Tỷ lệ vật liệu tái chế & thân thiện môi trường: 88%
+                    </span>
+                </div>
+
+                <!-- Thanh chỉ số Eco-STEM Progress -->
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                    <div class="flex justify-between items-center text-xs font-bold">
+                        <span class="text-slate-700">Cơ cấu vật liệu bền vững (Tái chế vỏ chai nhựa, bìa carton cũ, que gỗ/tre tự nhiên):</span>
+                        <span class="text-teal-700 font-mono">88% Eco-STEM</span>
+                    </div>
+                    <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-teal-500 to-sky-500 rounded-full" style="width: 88%;"></div>
+                    </div>
+                </div>
+
+                <!-- Lưới 8 nhóm vật liệu -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-white hover:border-sky-300 transition-all flex items-start gap-3">
+                        <span class="w-10 h-10 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center text-lg shrink-0">📦</span>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-teal-100 text-teal-800">Tái chế</span>
+                            <h3 class="font-bold text-slate-800 text-sm mt-1">1. Bìa carton</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Làm nền đế, vách tường và hệ mái dốc thoát nước.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-white hover:border-sky-300 transition-all flex items-start gap-3">
+                        <span class="w-10 h-10 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center text-lg shrink-0">🪵</span>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-teal-100 text-teal-800">Tự nhiên</span>
+                            <h3 class="font-bold text-slate-800 text-sm mt-1">2. Que gỗ, thanh tre</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Làm cột trụ nhà sàn, khung chịu lực, lan can và cầu thang.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-white hover:border-sky-300 transition-all flex items-start gap-3">
+                        <span class="w-10 h-10 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center text-lg shrink-0">🍾</span>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-teal-100 text-teal-800">Tái chế nhựa</span>
+                            <h3 class="font-bold text-slate-800 text-sm mt-1">3. Nắp chai, chai nhựa</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Làm dàn phao nổi kín khí dưới sàn và bể chứa nước sạch.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-white hover:border-sky-300 transition-all flex items-start gap-3">
+                        <span class="w-10 h-10 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center text-lg shrink-0">🧱</span>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-teal-100 text-teal-800">Tận dụng</span>
+                            <h3 class="font-bold text-slate-800 text-sm mt-1">4. Xốp, mút xốp</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Làm lớp nền nổi bổ trợ và giữ cân bằng cho sàn nhà.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-white hover:border-sky-300 transition-all flex items-start gap-3">
+                        <span class="w-10 h-10 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center text-lg shrink-0">🛠️</span>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-sky-100 text-sky-800">Dụng cụ</span>
+                            <h3 class="font-bold text-slate-800 text-sm mt-1">5. Keo nến, băng dính, kéo, thước</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Đo cắt chính xác và gắn kết các mối ghép kín nước.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-white hover:border-sky-300 transition-all flex items-start gap-3">
+                        <span class="w-10 h-10 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center text-lg shrink-0">🎨</span>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-sky-100 text-sky-800">Hoàn thiện</span>
+                            <h3 class="font-bold text-slate-800 text-sm mt-1">6. Giấy màu, sơn</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Trang trí mái ngói, pin mặt trời và tạo hiệu ứng sóng nước.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-white hover:border-sky-300 transition-all flex items-start gap-3">
+                        <span class="w-10 h-10 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center text-lg shrink-0">🌳</span>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-teal-100 text-teal-800">Sinh thái</span>
+                            <h3 class="font-bold text-slate-800 text-sm mt-1">7. Cây mô hình</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Tạo cảnh quan xanh và hành lang chắn sóng quanh nhà.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-white hover:border-sky-300 transition-all flex items-start gap-3">
+                        <span class="w-10 h-10 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center text-lg shrink-0">🪧</span>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-amber-100 text-amber-800">Truyền thông</span>
+                            <h3 class="font-bold text-slate-800 text-sm mt-1">8. Giấy làm bảng nhắc</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Thiết kế bảng khẩu hiệu khuyến cáo an toàn mùa lũ.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== MỤC 3: BẢN VẼ KỸ THUẬT CAD 3 GÓC NHÌN & QUY TRÌNH 5 BƯỚC CHẾ TẠO ==================== -->
+        <section id="thiet-ke-quy-trinh" class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm space-y-10">
+            
+            <!-- Phần 3.1: Trình xem Bản vẽ kỹ thuật CAD 3 góc nhìn -->
+            <div class="space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+                    <div class="flex items-center gap-3">
+                        <span class="w-9 h-9 rounded-full bg-teal-600 text-white font-extrabold flex items-center justify-center text-sm shrink-0">3</span>
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-teal-700">Bản vẽ kỹ thuật số (CAD Blueprint)</span>
+                            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-800 uppercase tracking-tight">
+                                Thiết kế mô hình (Nhìn từ trước, từ bên, từ trên)
+                            </h2>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button type="button" data-cad-view="front" class="cad-view-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-sky-600 text-white shadow-sm transition-all">
+                            📐 Nhìn từ trước
+                        </button>
+                        <button type="button" data-cad-view="side" class="cad-view-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-sky-50 transition-all">
+                            📐 Nhìn từ bên
+                        </button>
+                        <button type="button" data-cad-view="top" class="cad-view-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-sky-50 transition-all">
+                            📐 Nhìn từ trên
+                        </button>
+                        <button id="toggleCadDimBtn" type="button" class="px-3 py-2 rounded-xl text-xs font-semibold border border-sky-200 text-sky-700 bg-sky-50 hover:bg-sky-100 transition-all">
+                            📏 Ẩn/Hiện kích thước
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                    <!-- Màn hình CAD Vector -->
+                    <div class="lg:col-span-8 cad-blueprint-grid rounded-2xl p-4 sm:p-6 border-2 border-slate-800 shadow-inner relative overflow-hidden">
+                        <div class="flex items-center justify-between text-[11px] font-mono text-sky-300/90 mb-2 border-b border-sky-500/20 pb-2">
+                            <span id="cadHeaderTitle">GÓC CHIẾU: NHÌN TỪ TRƯỚC (FRONT VIEW)</span>
+                            <span>TỶ LỆ MÔ HÌNH: 1:25 | ĐƠN VỊ: CM</span>
+                        </div>
+
+                        <!-- GÓC NHÌN 1: NHÌN TỪ TRƯỚC -->
+                        <svg id="cadSvgFront" class="w-full h-64 sm:h-72" viewBox="0 0 500 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="20" y1="245" x2="480" y2="245" stroke="#38bdf8" stroke-width="2" stroke-dasharray="6 4"/>
+                            <text x="30" y="262" fill="#7dd3fc" font-size="10" font-family="monospace">Mặt nước / Đế mô hình</text>
+                            <rect x="135" y="165" width="10" height="80" fill="#f59e0b" fill-opacity="0.3" stroke="#fbbf24" stroke-width="2"/>
+                            <rect x="335" y="165" width="10" height="80" fill="#f59e0b" fill-opacity="0.3" stroke="#fbbf24" stroke-width="2"/>
+                            <g stroke="#38bdf8" stroke-width="2" fill="#0284c7" fill-opacity="0.35">
+                                <circle cx="165" cy="182" r="12"/>
+                                <circle cx="202" cy="182" r="12"/>
+                                <circle cx="240" cy="182" r="12"/>
+                                <circle cx="278" cy="182" r="12"/>
+                                <circle cx="315" cy="182" r="12"/>
+                            </g>
+                            <rect x="120" y="155" width="240" height="12" fill="#fbbf24" fill-opacity="0.25" stroke="#f59e0b" stroke-width="2"/>
+                            <polygon points="215,167 255,167 270,245 200,245" fill="#fbbf24" fill-opacity="0.15" stroke="#fbbf24" stroke-width="1.8"/>
+                            <rect x="145" y="85" width="190" height="70" fill="#e0f2fe" fill-opacity="0.12" stroke="#e2e8f0" stroke-width="2"/>
+                            <rect x="220" y="105" width="32" height="50" stroke="#38bdf8" stroke-width="1.8" fill="#38bdf8" fill-opacity="0.15"/>
+                            <rect x="165" y="105" width="32" height="28" stroke="#38bdf8" stroke-width="1.8"/>
+                            <rect x="280" y="105" width="32" height="28" stroke="#38bdf8" stroke-width="1.8"/>
+                            <polygon points="115,85 240,25 365,85" fill="#f43f5e" fill-opacity="0.22" stroke="#fb7185" stroke-width="2.2"/>
+                            <rect x="342" y="112" width="26" height="35" rx="4" fill="#3b82f6" fill-opacity="0.4" stroke="#60a5fa" stroke-width="2"/>
+                            <text x="346" y="133" fill="#ffffff" font-size="9" font-family="monospace">H2O</text>
+                            <g class="cad-dim-group" stroke="#34d399" stroke-width="1.2" fill="#6ee7b7" font-size="10" font-family="monospace">
+                                <line x1="85" y1="25" x2="85" y2="245"/>
+                                <line x1="78" y1="25" x2="92" y2="25"/>
+                                <line x1="78" y1="245" x2="92" y2="245"/>
+                                <text x="22" y="140">Cao: 28cm</text>
+                                <line x1="120" y1="15" x2="365" y2="15"/>
+                                <text x="205" y="12">Rộng mái: 30cm</text>
+                                <text x="378" y="185">Phao chai nhựa</text>
+                            </g>
+                        </svg>
+
+                        <!-- GÓC NHÌN 2: NHÌN TỪ BÊN -->
+                        <svg id="cadSvgSide" class="w-full h-64 sm:h-72 hidden" viewBox="0 0 500 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="20" y1="245" x2="480" y2="245" stroke="#38bdf8" stroke-width="2" stroke-dasharray="6 4"/>
+                            <text x="30" y="262" fill="#7dd3fc" font-size="10" font-family="monospace">Mặt nước / Đế mô hình (Góc nhìn ngang)</text>
+                            <rect x="150" y="165" width="10" height="80" fill="#f59e0b" fill-opacity="0.3" stroke="#fbbf24" stroke-width="2"/>
+                            <rect x="310" y="165" width="10" height="80" fill="#f59e0b" fill-opacity="0.3" stroke="#fbbf24" stroke-width="2"/>
+                            <rect x="145" y="170" width="180" height="22" rx="11" fill="#0284c7" fill-opacity="0.35" stroke="#38bdf8" stroke-width="2"/>
+                            <rect x="130" y="155" width="210" height="12" fill="#fbbf24" fill-opacity="0.25" stroke="#f59e0b" stroke-width="2"/>
+                            <rect x="150" y="85" width="170" height="70" fill="#e0f2fe" fill-opacity="0.12" stroke="#e2e8f0" stroke-width="2"/>
+                            <rect x="215" y="105" width="40" height="28" stroke="#38bdf8" stroke-width="1.8"/>
+                            <polygon points="135,85 165,30 305,30 335,85" fill="#f43f5e" fill-opacity="0.22" stroke="#fb7185" stroke-width="2.2"/>
+                            <rect x="195" y="42" width="75" height="28" fill="#0284c7" fill-opacity="0.45" stroke="#7dd3fc" stroke-width="1.8"/>
+                            <text x="205" y="60" fill="#e0f2fe" font-size="9" font-family="monospace">PIN MẶT TRỜI</text>
+                            <line x1="130" y1="160" x2="75" y2="245" stroke="#fbbf24" stroke-width="3"/>
+                            <line x1="140" y1="165" x2="85" y2="245" stroke="#fbbf24" stroke-width="3"/>
+                            <g class="cad-dim-group" stroke="#34d399" stroke-width="1.2" fill="#6ee7b7" font-size="10" font-family="monospace">
+                                <line x1="130" y1="215" x2="340" y2="215"/>
+                                <text x="195" y="232">Chiều sâu sàn: 24cm</text>
+                                <text x="350" y="185">Ống phao dọc</text>
+                                <text x="45" y="195">Cầu thang</text>
+                            </g>
+                        </svg>
+
+                        <!-- GÓC NHÌN 3: NHÌN TỪ TRÊN -->
+                        <svg id="cadSvgTop" class="w-full h-64 sm:h-72 hidden" viewBox="0 0 500 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="40" y="20" width="420" height="240" rx="14" fill="#0284c7" fill-opacity="0.12" stroke="#38bdf8" stroke-width="1.8" stroke-dasharray="6 4"/>
+                            <rect x="135" y="55" width="210" height="150" rx="6" fill="#fbbf24" fill-opacity="0.18" stroke="#f59e0b" stroke-width="2"/>
+                            <rect x="155" y="72" width="170" height="116" fill="#f43f5e" fill-opacity="0.25" stroke="#fb7185" stroke-width="2"/>
+                            <line x1="155" y1="130" x2="325" y2="130" stroke="#fda4af" stroke-width="2.5"/>
+                            <rect x="205" y="82" width="65" height="34" fill="#0369a1" stroke="#7dd3fc" stroke-width="1.5"/>
+                            <circle cx="355" cy="95" r="16" fill="#2563eb" fill-opacity="0.5" stroke="#93c5fd" stroke-width="2"/>
+                            <text x="344" y="99" fill="#ffffff" font-size="9" font-family="monospace">BỂ</text>
+                            <rect x="215" y="205" width="42" height="42" fill="#fbbf24" fill-opacity="0.25" stroke="#fbbf24" stroke-width="1.8"/>
+                            <ellipse cx="325" cy="230" rx="34" ry="14" fill="#b45309" fill-opacity="0.5" stroke="#fbbf24" stroke-width="2"/>
+                            <text x="304" y="233" fill="#fef3c7" font-size="9" font-family="monospace">THUYỀN</text>
+                            <circle cx="85" cy="65" r="18" fill="#10b981" fill-opacity="0.35" stroke="#34d399" stroke-width="2"/>
+                            <circle cx="85" cy="195" r="18" fill="#10b981" fill-opacity="0.35" stroke="#34d399" stroke-width="2"/>
+                            <circle cx="410" cy="65" r="18" fill="#10b981" fill-opacity="0.35" stroke="#34d399" stroke-width="2"/>
+                            <g class="cad-dim-group" stroke="#34d399" stroke-width="1.2" fill="#6ee7b7" font-size="10" font-family="monospace">
+                                <text x="180" y="45">Mặt bằng tổng thể: 40cm × 30cm</text>
+                                <text x="195" y="148">Đỉnh mái dốc</text>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- Thuyết minh chi tiết góc nhìn -->
+                    <div class="lg:col-span-4 bg-slate-50 rounded-2xl p-5 border border-slate-200 space-y-4">
+                        <span id="cadViewBadge" class="inline-block px-3 py-1 rounded-lg bg-sky-100 text-sky-800 font-bold text-xs">
+                            Góc nhìn 1/3: Nhìn từ trước
+                        </span>
+                        <h3 id="cadViewTitle" class="font-extrabold text-slate-800 text-lg">
+                            Mặt chính diện Ngôi nhà chống lũ
+                        </h3>
+                        <p id="cadViewDesc" class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            Thể hiện rõ tỷ lệ giữa chiều cao chân cột nhà sàn, dàn 5 ống phao chai nhựa đặt đối xứng dưới đáy sàn giúp cân bằng trọng tâm, cầu thang lên xuống và mái nhọn thoát nước mưa.
+                        </p>
+                        <div class="pt-2 border-t border-slate-200/80 space-y-2 text-xs text-slate-700">
+                            <p class="font-bold text-sky-900">Thông số kỹ thuật chính:</p>
+                            <p id="cadSpec1">• Chiều cao tổng thể mô hình: <strong>28 cm</strong></p>
+                            <p id="cadSpec2">• Khoảng sáng gầm nhà sàn: <strong>8 cm</strong></p>
+                            <p id="cadSpec3">• Độ dốc mái thoát nước: <strong>40°</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phần 3.2: Quy trình 5 bước chế tạo mô hình tương tác -->
+            <div class="pt-6 border-t border-slate-200 space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-sky-600 text-white font-extrabold flex items-center justify-center text-sm shrink-0">4</span>
+                        <div>
+                            <h3 class="text-xl font-extrabold text-slate-800 uppercase tracking-tight">
+                                Tiến hành làm mô hình (Quy trình 5 bước tương tác)
+                            </h3>
+                        </div>
+                    </div>
+                    <span class="text-xs text-slate-500">Bấm chọn từng bước (Bước 1 → Bước 5) để xem thao tác kỹ thuật</span>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+                    <button type="button" data-step="1" class="step-tab-btn p-3 rounded-2xl border-2 border-sky-600 bg-sky-600 text-white text-left transition-all">
+                        <span class="text-[11px] font-extrabold uppercase opacity-85 block">Bước 1</span>
+                        <span class="font-bold text-xs sm:text-sm line-clamp-1">Nền & Khung nhà</span>
+                    </button>
+                    <button type="button" data-step="2" class="step-tab-btn p-3 rounded-2xl border border-slate-200 bg-slate-50 hover:border-sky-300 text-slate-700 text-left transition-all">
+                        <span class="text-[11px] font-extrabold uppercase text-sky-600 block">Bước 2</span>
+                        <span class="font-bold text-xs sm:text-sm line-clamp-1">Sàn, Tường, Mái</span>
+                    </button>
+                    <button type="button" data-step="3" class="step-tab-btn p-3 rounded-2xl border border-slate-200 bg-slate-50 hover:border-sky-300 text-slate-700 text-left transition-all">
+                        <span class="text-[11px] font-extrabold uppercase text-sky-600 block">Bước 3</span>
+                        <span class="font-bold text-xs sm:text-sm line-clamp-1">Giải pháp chống lũ</span>
+                    </button>
+                    <button type="button" data-step="4" class="step-tab-btn p-3 rounded-2xl border border-slate-200 bg-slate-50 hover:border-sky-300 text-slate-700 text-left transition-all">
+                        <span class="text-[11px] font-extrabold uppercase text-sky-600 block">Bước 4</span>
+                        <span class="font-bold text-xs sm:text-sm line-clamp-1">Trang trí cảnh quan</span>
+                    </button>
+                    <button type="button" data-step="5" class="step-tab-btn p-3 rounded-2xl border border-slate-200 bg-slate-50 hover:border-sky-300 text-slate-700 text-left transition-all col-span-2 sm:col-span-1">
+                        <span class="text-[11px] font-extrabold uppercase text-sky-600 block">Bước 5</span>
+                        <span class="font-bold text-xs sm:text-sm line-clamp-1">Hoàn thiện mô hình</span>
+                    </button>
+                </div>
+
+                <div class="bg-sky-50/70 rounded-2xl p-5 sm:p-6 border border-sky-200 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                    <div class="lg:col-span-8 space-y-3">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-600 text-white text-xs font-bold">
+                            <span id="stepDetailBadge">BƯỚC 1 / 5</span>
+                        </div>
+                        <h4 id="stepDetailTitle" class="text-lg sm:text-xl font-extrabold text-sky-950">
+                            Làm nền và khung nhà (bìa carton, que gỗ)
+                        </h4>
+                        <p id="stepDetailDesc" class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                            Đo đạc kích thước theo bản vẽ, cắt tấm bìa carton cứng làm đế mô hình và sử dụng que gỗ/thanh tre dựng hệ thống cột trụ nhà sàn chịu lực vững chắc.
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                            <div class="bg-white p-3.5 rounded-xl border border-sky-100">
+                                <p class="text-[11px] font-bold uppercase text-sky-700">🛠️ Vật liệu & Dụng cụ chính</p>
+                                <p id="stepDetailMaterials" class="text-xs font-semibold text-slate-800 mt-1">Bìa carton dày, que gỗ, thanh tre, thước kẻ, súng bắn keo nến.</p>
+                            </div>
+                            <div class="bg-white p-3.5 rounded-xl border border-teal-100">
+                                <p class="text-[11px] font-bold uppercase text-teal-700">✓ Tiêu chí kiểm tra độ bền</p>
+                                <p id="stepDetailQA" class="text-xs font-semibold text-slate-800 mt-1">Các cột trụ thẳng đứng, có chiều cao bằng nhau và bám chắc vào tấm nền.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-4 bg-white rounded-2xl p-4 border border-sky-100 text-center space-y-2">
+                        <div id="stepVisualIcon" class="w-16 h-16 mx-auto rounded-2xl bg-sky-100 text-sky-700 flex items-center justify-center text-3xl font-bold">
+                            🏗️
+                        </div>
+                        <p class="text-xs font-bold text-slate-800">Tiến độ chế tạo sản phẩm</p>
+                        <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                            <div id="stepProgressBar" class="h-full bg-sky-600 rounded-full transition-all duration-300" style="width: 20%;"></div>
+                        </div>
+                        <p id="stepProgressText" class="text-xs font-mono font-bold text-sky-700">Hoàn thành 20%</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== MỤC 4: PHÒNG THÍ NGHIỆM MÔ PHỎNG STEM (3 CÔNG CỤ TƯƠNG TÁC CHUYÊN SÂU) ==================== -->
+        <section id="phong-thi-nghiem-stem" class="space-y-8">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <span class="w-9 h-9 rounded-full bg-teal-600 text-white font-extrabold flex items-center justify-center text-sm shrink-0">5</span>
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-teal-700">Phòng thí nghiệm tương tác STEM</span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-800 uppercase tracking-tight">
+                            KIỂM CHỨNG KHOA HỌC & NGUYÊN LÝ HOẠT ĐỘNG
+                        </h2>
+                    </div>
+                </div>
+                <span class="text-xs font-semibold text-slate-500">Thực hành tương tác trực tiếp với 3 mô phỏng Vật lý – Kỹ thuật bên dưới</span>
+            </div>
+
+            <!-- CÔNG CỤ 4.1: THANH TRƯỢT MÔ PHỎNG MỰC NƯỚC LŨ (0.0m - 3.5m, mốc chân cột 1.2m) -->
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-sky-200 shadow-sm space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase text-sky-600">Công cụ 4.1 • Mô phỏng Cơ học Thủy tĩnh</span>
+                        <h3 class="text-lg sm:text-xl font-extrabold text-slate-800">
+                            THANH TRƯỢT MÔ PHỎNG MỰC NƯỚC LŨ (0.0m – 3.5m)
+                        </h3>
+                    </div>
+                    <div class="bg-sky-50 border border-sky-200 rounded-xl px-3.5 py-2 text-xs text-sky-900 font-medium">
+                        Chiều cao chân cột sàn: <strong class="font-mono text-sky-700">1.2m</strong> • Vượt <strong class="font-mono text-sky-700">1.2m</strong> phao tự động nâng nhà nổi lên
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <!-- Màn hình mô phỏng trực quan -->
+                    <div class="lg:col-span-7">
+                        <div class="relative w-full h-80 sm:h-96 rounded-2xl bg-gradient-to-b from-sky-100 via-sky-50 to-slate-100 border border-sky-200 overflow-hidden select-none shadow-inner">
+                            <!-- Thước đo chiều cao bên trái -->
+                            <div class="absolute left-3 top-4 bottom-8 w-12 z-20 flex flex-col justify-between text-[11px] font-mono font-bold text-slate-500 border-r border-slate-300/80 pr-1.5 text-right">
+                                <span>3.5m</span>
+                                <span>2.5m</span>
+                                <span class="text-amber-700">1.2m</span>
+                                <span>0.6m</span>
+                                <span>0.0m</span>
+                            </div>
+
+                            <!-- Nhãn trạng thái nổi trên góc phải -->
+                            <div class="absolute top-3 right-3 z-20 flex items-center gap-2 bg-white/95 backdrop-blur px-3.5 py-1.5 rounded-xl border border-sky-200 shadow-sm">
+                                <span id="simStatusDot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                                <span id="simStatusBadgeText" class="text-xs font-bold text-slate-800">Mực nước: 0.0m (Đứng trên cột trụ)</span>
+                            </div>
+
+                            <!-- 2 Cột trụ định vị thẳng đứng -->
+                            <div class="absolute left-[26%] bottom-8 w-3 h-64 bg-amber-800/85 rounded-t-md z-10 border-x border-amber-950/30"></div>
+                            <div class="absolute right-[24%] bottom-8 w-3 h-64 bg-amber-800/85 rounded-t-md z-10 border-x border-amber-950/30"></div>
+
+                            <!-- Khối Ngôi nhà + Phao nổi + Thuyền cứu hộ -->
+                            <div id="floatingHouseGroup" class="floating-house-group absolute left-0 right-0 z-20 flex flex-col items-center pointer-events-none" style="bottom: 80px;">
+                                <!-- Mái nhà dốc + Pin mặt trời -->
+                                <div class="relative w-48 sm:w-56 h-0 border-l-[96px] sm:border-l-[112px] border-l-transparent border-r-[96px] sm:border-r-[112px] border-r-transparent border-b-[46px] border-b-rose-600 drop-shadow-sm">
+                                    <div class="absolute -bottom-10 left-3 w-12 h-5 bg-sky-900 border border-sky-300 rounded transform skew-x-12 grid grid-cols-3 gap-0.5 p-0.5">
+                                        <div class="bg-sky-600"></div><div class="bg-sky-600"></div><div class="bg-sky-600"></div>
+                                    </div>
+                                </div>
+                                <!-- Thân ngôi nhà & Bể chứa nước trên cao -->
+                                <div class="relative w-40 sm:w-48 h-20 bg-amber-100 border-2 border-amber-800 flex items-center justify-around px-3 shadow-sm">
+                                    <div class="w-7 h-7 bg-sky-200 border-2 border-amber-800 rounded-sm grid grid-cols-2">
+                                        <div class="border-r border-b border-amber-800/50"></div>
+                                        <div class="border-b border-amber-800/50"></div>
+                                    </div>
+                                    <div class="w-8 h-12 bg-amber-700 border-2 border-amber-900 rounded-t-sm self-end"></div>
+                                    <div class="absolute -right-7 bottom-2 w-6 h-9 bg-blue-600 border border-blue-800 rounded-t-md flex items-center justify-center text-[8px] font-bold text-white shadow">
+                                        H₂O
+                                    </div>
+                                </div>
+                                <!-- Sàn gỗ nhà sàn -->
+                                <div class="w-48 sm:w-56 h-3 bg-amber-800 rounded-sm shadow"></div>
+                                <!-- Hệ thống Phao nổi bằng chai nhựa bên dưới sàn -->
+                                <div class="w-44 sm:w-52 h-6 bg-sky-100/95 border border-sky-400 rounded-b-lg px-2 flex items-center justify-between gap-1 shadow-sm">
+                                    <div class="w-7 h-4 rounded-full bg-sky-500 border border-sky-700"></div>
+                                    <div class="w-7 h-4 rounded-full bg-sky-500 border border-sky-700"></div>
+                                    <div class="w-7 h-4 rounded-full bg-sky-500 border border-sky-700"></div>
+                                    <div class="w-7 h-4 rounded-full bg-sky-500 border border-sky-700"></div>
+                                    <div class="w-7 h-4 rounded-full bg-sky-500 border border-sky-700"></div>
+                                </div>
+                                <!-- Thuyền cứu hộ nổi bên cạnh -->
+                                <div class="absolute -right-4 sm:right-6 bottom-0 w-14 h-5 bg-amber-700 border-2 border-amber-950 rounded-b-xl flex items-center justify-center text-[9px] text-amber-100 font-bold shadow">
+                                    Thuyền
+                                </div>
+                            </div>
+
+                            <!-- Chân đế nhà sàn cố định dưới mặt đất (cao 1.2m tương đương 48px) -->
+                            <div class="absolute left-1/2 -translate-x-1/2 bottom-8 w-40 sm:w-48 h-12 flex justify-between px-4 z-10 border-t-2 border-dashed border-amber-700/60">
+                                <div class="w-2.5 h-full bg-amber-900"></div>
+                                <div class="w-2.5 h-full bg-amber-900"></div>
+                                <div class="w-2.5 h-full bg-amber-900"></div>
+                            </div>
+
+                            <!-- Lớp Nước Lũ Dâng -->
+                            <div id="waterLayer" class="water-surface absolute left-0 right-0 bottom-8 bg-gradient-to-t from-sky-700/85 via-sky-500/75 to-sky-400/65 border-t-2 border-sky-300 z-20 flex items-start justify-center overflow-hidden" style="height: 0px;">
+                                <span class="text-[11px] font-bold text-white uppercase tracking-widest mt-1 drop-shadow">
+                                    ~~~ Mực nước lũ ~~~
+                                </span>
+                            </div>
+
+                            <!-- Nền đất tự nhiên -->
+                            <div class="absolute bottom-0 left-0 right-0 h-8 bg-teal-900 border-t-4 border-teal-600 z-30 flex items-center justify-between px-4 text-[11px] font-semibold text-teal-100">
+                                <span>🌱 Mặt đất tự nhiên (Cốt 0.0m)</span>
+                                <span>Cột sàn cố định: 1.2m</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bảng điều khiển & Thông số đo đạc -->
+                    <div class="lg:col-span-5 space-y-4">
+                        <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
+                            <div class="flex items-center justify-between">
+                                <label for="floodRangeSlider" class="font-bold text-slate-800 text-sm">
+                                    Kéo thanh trượt mực nước lũ:
+                                </label>
+                                <span id="waterLevelValue" class="px-3 py-1 rounded-xl bg-sky-600 text-white font-extrabold text-sm font-mono">
+                                    0.0 m
+                                </span>
+                            </div>
+
+                            <input id="floodRangeSlider" type="range" min="0" max="3.5" step="0.1" value="0" class="w-full h-2.5 bg-sky-200 rounded-lg appearance-none cursor-pointer accent-sky-600">
+
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+                                <button type="button" data-water-preset="0" class="water-preset-btn px-2.5 py-2 rounded-xl text-xs font-bold bg-sky-600 text-white border border-sky-600 transition-all">
+                                    0.0m<br><span class="font-normal opacity-90">Bình thường</span>
+                                </button>
+                                <button type="button" data-water-preset="1.0" class="water-preset-btn px-2.5 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:border-sky-300 transition-all">
+                                    1.0m<br><span class="font-normal text-slate-500">Dưới cột sàn</span>
+                                </button>
+                                <button type="button" data-water-preset="2.2" class="water-preset-btn px-2.5 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:border-sky-300 transition-all">
+                                    2.2m<br><span class="font-normal text-slate-500">Nhà nổi lên</span>
+                                </button>
+                                <button type="button" data-water-preset="3.5" class="water-preset-btn px-2.5 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:border-sky-300 transition-all">
+                                    3.5m<br><span class="font-normal text-slate-500">Lũ lịch sử</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="p-3.5 rounded-2xl bg-sky-50/70 border border-sky-100">
+                                <p class="text-xs text-slate-500 font-medium">Độ cao sàn nhà so với đất</p>
+                                <p id="houseFloorHeightValue" class="text-lg sm:text-xl font-extrabold text-sky-900 font-mono mt-0.5">1.2 m</p>
+                                <p class="text-[11px] text-teal-700 font-semibold mt-0.5">✓ Sàn sinh hoạt luôn khô ráo</p>
+                            </div>
+                            <div class="p-3.5 rounded-2xl bg-sky-50/70 border border-sky-100">
+                                <p class="text-xs text-slate-500 font-medium">Trạng thái ngôi nhà</p>
+                                <p id="pontoonStateValue" class="text-sm sm:text-base font-extrabold text-slate-800 mt-1">Đứng trên cột trụ</p>
+                                <p id="pontoonSubText" class="text-[11px] text-slate-500 mt-0.5">Mực nước &le; 1.2m</p>
+                            </div>
+                        </div>
+
+                        <div id="floodAdviceBox" class="p-4 rounded-2xl bg-teal-50 border border-teal-200 text-xs sm:text-sm text-teal-950 space-y-1">
+                            <p class="font-bold">✅ Phân tích cơ chế hoạt động:</p>
+                            <p id="floodAdviceText" class="leading-relaxed text-slate-700">
+                                Khi nước chưa vượt qua chiều cao cột nhà sàn (1.2m), ngôi nhà đứng vững trên hệ thống trụ gỗ. Khi nước vượt quá 1.2m, phao chai nhựa tự động nâng sàn nhà nổi lên theo mặt nước.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CÔNG CỤ 4.2 & 4.3: ĐẶT SONG SONG HOẶC XẾP TẦNG KHOA HỌC -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- CÔNG CỤ 4.2: BẢNG TÍNH VẬT LÝ LỰC ĐẨY ÁC-SI-MÉT (F_A = d * V) -->
+                <div class="bg-white rounded-3xl p-6 sm:p-8 border border-teal-200 shadow-sm flex flex-col justify-between space-y-6">
+                    <div class="space-y-4">
+                        <div class="border-b border-slate-100 pb-4">
+                            <span class="text-xs font-bold uppercase text-teal-700">Công cụ 4.2 • Toán học & Vật lý STEM</span>
+                            <h3 class="text-lg sm:text-xl font-extrabold text-slate-800 mt-0.5">
+                                BẢNG TÍNH LỰC ĐẨY ÁC-SI-MÉT (F<sub>A</sub> = d × V)
+                            </h3>
+                            <p class="text-xs text-slate-500 mt-1">Điều kiện để mô hình nổi an toàn: Tổng lực đẩy <strong class="font-mono">F<sub>A</sub> &ge; P</strong> (Trọng lượng nhà)</p>
+                        </div>
+
+                        <!-- Các thanh trượt đầu vào -->
+                        <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 space-y-4">
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between text-xs sm:text-sm">
+                                    <label for="bottleCountInput" class="font-bold text-slate-700">1. Số lượng vỏ chai nhựa:</label>
+                                    <span id="bottleCountDisplay" class="px-2.5 py-0.5 rounded-lg bg-sky-600 text-white font-mono font-bold text-xs">12 chai</span>
+                                </div>
+                                <input id="bottleCountInput" type="range" min="4" max="24" step="1" value="12" class="w-full h-2 bg-sky-200 rounded-lg appearance-none cursor-pointer accent-sky-600">
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <label class="font-bold text-slate-700 text-xs sm:text-sm block">2. Dung tích mỗi chai nhựa:</label>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <button type="button" data-bottle-vol="330" class="bottle-vol-btn py-2 px-2 rounded-xl text-xs font-bold border border-slate-200 bg-white text-slate-700 hover:border-sky-300 transition-all">
+                                        330 ml
+                                    </button>
+                                    <button type="button" data-bottle-vol="500" class="bottle-vol-btn py-2 px-2 rounded-xl text-xs font-bold border border-sky-600 bg-sky-600 text-white transition-all">
+                                        500 ml
+                                    </button>
+                                    <button type="button" data-bottle-vol="1500" class="bottle-vol-btn py-2 px-2 rounded-xl text-xs font-bold border border-slate-200 bg-white text-slate-700 hover:border-sky-300 transition-all">
+                                        1500 ml
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between text-xs sm:text-sm">
+                                    <label for="houseMassInput" class="font-bold text-slate-700">3. Khối lượng mô hình (m):</label>
+                                    <span id="houseMassDisplay" class="px-2.5 py-0.5 rounded-lg bg-teal-600 text-white font-mono font-bold text-xs">1200 g (1.2 kg)</span>
+                                </div>
+                                <input id="houseMassInput" type="range" min="200" max="5000" step="100" value="1200" class="w-full h-2 bg-teal-200 rounded-lg appearance-none cursor-pointer accent-teal-600">
+                            </div>
+                        </div>
+
+                        <!-- 4 ô thông số kết quả -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-center">
+                            <div class="p-3 rounded-xl bg-sky-50 border border-sky-100">
+                                <p class="text-[11px] text-slate-500">Thể tích (V)</p>
+                                <p id="calcTotalVolume" class="text-sm font-extrabold text-sky-900 font-mono mt-0.5">6.00 L</p>
+                            </div>
+                            <div class="p-3 rounded-xl bg-sky-50 border border-sky-100">
+                                <p class="text-[11px] text-slate-500">Trọng lượng (P)</p>
+                                <p id="calcHouseWeight" class="text-sm font-extrabold text-slate-800 font-mono mt-0.5">12.0 N</p>
+                            </div>
+                            <div class="p-3 rounded-xl bg-sky-50 border border-sky-100">
+                                <p class="text-[11px] text-slate-500">Lực đẩy (F<sub>A</sub>)</p>
+                                <p id="calcBuoyantForce" class="text-sm font-extrabold text-sky-700 font-mono mt-0.5">60.0 N</p>
+                            </div>
+                            <div class="p-3 rounded-xl bg-teal-50 border border-teal-100">
+                                <p class="text-[11px] text-slate-500">Hệ số an toàn</p>
+                                <p id="calcSafetyFactor" class="text-sm font-extrabold text-teal-800 font-mono mt-0.5">5.0x</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kết luận Nổi An Toàn hay Cần Thêm Phao -->
+                    <div class="space-y-3">
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between text-xs font-bold">
+                                <span class="text-slate-600">Tỷ lệ thể tích phao chìm dưới nước:</span>
+                                <span id="calcSubmergedPercent" class="font-mono text-sky-700">20%</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
+                                <div id="calcLoadBar" class="h-full bg-teal-500 rounded-full transition-all duration-300" style="width: 20%;"></div>
+                            </div>
+                        </div>
+
+                        <div id="calcResultBanner" class="p-4 rounded-2xl bg-teal-50 border border-teal-200 text-xs space-y-1">
+                            <p id="calcResultTitle" class="font-bold text-teal-900">
+                                ✅ KẾT LUẬN: NỔI AN TOÀN TUYỆT ĐỐI (Hệ số an toàn 5.0x)
+                            </p>
+                            <p id="calcResultDetail" class="text-slate-700 leading-relaxed">
+                                Lực đẩy Ác-si-mét (60.0 N) lớn gấp 5.0 lần trọng lượng nhà (12.0 N), đảm bảo nhà nổi ổn định.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CÔNG CỤ 4.3 (NÂNG CẤP MỚI): MÔ PHỎNG TỰ CUNG TỰ CẤP KHI CÔ LẬP MÙA LŨ (NƯỚC SẠCH & NĂNG LƯỢNG) -->
+                <div class="bg-white rounded-3xl p-6 sm:p-8 border border-amber-200 shadow-sm flex flex-col justify-between space-y-6">
+                    <div class="space-y-4">
+                        <div class="border-b border-slate-100 pb-4">
+                            <span class="text-xs font-bold uppercase text-amber-700">Công cụ 4.3 (Mới) • Mô phỏng Sinh tồn & Tự chủ</span>
+                            <h3 class="text-lg sm:text-xl font-extrabold text-slate-800 mt-0.5">
+                                TỰ CUNG TỰ CẤP NƯỚC SẠCH & NĂNG LƯỢNG KHI CÔ LẬP
+                            </h3>
+                            <p class="text-xs text-slate-500 mt-1">Chứng minh vai trò thực tiễn của <strong>Bể chứa nước trên cao</strong> và <strong>Mái dốc thu nước mưa + Pin mặt trời</strong></p>
+                        </div>
+
+                        <!-- Điều chỉnh số người và số ngày cô lập -->
+                        <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 space-y-4">
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between text-xs sm:text-sm">
+                                    <label for="familyMembersInput" class="font-bold text-slate-700">1. Số thành viên trong gia đình:</label>
+                                    <span id="familyMembersDisplay" class="px-2.5 py-0.5 rounded-lg bg-amber-500 text-white font-mono font-bold text-xs">4 người</span>
+                                </div>
+                                <input id="familyMembersInput" type="range" min="2" max="6" step="1" value="4" class="w-full h-2 bg-amber-200 rounded-lg appearance-none cursor-pointer accent-amber-500">
+                                <div class="flex justify-between text-[10px] text-slate-400 font-mono">
+                                    <span>2 người</span><span>4 người</span><span>6 người</span>
+                                </div>
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between text-xs sm:text-sm">
+                                    <label for="isolationDaysInput" class="font-bold text-slate-700">2. Số ngày mưa lũ chia cắt / cô lập:</label>
+                                    <span id="isolationDaysDisplay" class="px-2.5 py-0.5 rounded-lg bg-sky-600 text-white font-mono font-bold text-xs">5 ngày</span>
+                                </div>
+                                <input id="isolationDaysInput" type="range" min="1" max="10" step="1" value="5" class="w-full h-2 bg-sky-200 rounded-lg appearance-none cursor-pointer accent-sky-600">
+                                <div class="flex justify-between text-[10px] text-slate-400 font-mono">
+                                    <span>1 ngày</span><span>5 ngày</span><span>10 ngày</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Kết quả tính toán Nước sạch & Điện mặt trời -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                            <div class="p-3.5 rounded-2xl bg-sky-50 border border-sky-100">
+                                <p class="text-[11px] text-slate-500 font-medium">Nhu cầu nước tối thiểu</p>
+                                <p id="simWaterNeeded" class="text-base font-extrabold text-sky-950 font-mono mt-0.5">100 Lít</p>
+                                <p class="text-[10px] text-slate-500 mt-0.5">Định mức 5 Lít/người/ngày</p>
+                            </div>
+                            <div class="p-3.5 rounded-2xl bg-teal-50 border border-teal-100">
+                                <p class="text-[11px] text-slate-500 font-medium">Nước mưa thu từ mái dốc</p>
+                                <p id="simRainHarvested" class="text-base font-extrabold text-teal-800 font-mono mt-0.5">+75 Lít</p>
+                                <p class="text-[10px] text-teal-700 mt-0.5">Lọc bổ sung vào bể cao</p>
+                            </div>
+                            <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-100">
+                                <p class="text-[11px] text-slate-500 font-medium">Chiếu sáng & Sạc SOS</p>
+                                <p id="simSolarHours" class="text-base font-extrabold text-amber-800 font-mono mt-0.5">8 giờ/đêm</p>
+                                <p class="text-[10px] text-amber-700 mt-0.5">Pin mặt trời duy trì liên lạc</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Đánh giá khả năng tự cung tự cấp -->
+                    <div class="space-y-3">
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between text-xs font-bold">
+                                <span class="text-slate-600">Tổng nguồn nước sạch khả dụng (Bể trữ 120L + Nước mưa mái dốc):</span>
+                                <span id="simTotalWaterAvailable" class="font-mono text-teal-700">195 Lít</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
+                                <div id="simAutonomyBar" class="h-full bg-teal-500 rounded-full transition-all duration-300" style="width: 100%;"></div>
+                            </div>
+                        </div>
+
+                        <div id="simAutonomyBanner" class="p-4 rounded-2xl bg-teal-50 border border-teal-200 text-xs space-y-1">
+                            <p id="simAutonomyTitle" class="font-bold text-teal-900">
+                                ✅ ĐẢM BẢO 100% NHU CẦU SINH TỒN TRONG 5 NGÀY CÔ LẬP
+                            </p>
+                            <p id="simAutonomyDesc" class="text-slate-700 leading-relaxed">
+                                Bể chứa nước trên cao (120L) kết hợp hệ thống thu nước mưa từ mái dốc cung cấp đủ nước ăn uống hợp vệ sinh, không phụ thuộc nguồn nước ngập lũ bên dưới.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==================== MỤC 5 (NÂNG CẤP MỚI): BẢNG SO SÁNH HIỆU QUẢ & GÓC HỖ TRỢ THUYẾT TRÌNH 6 PHẦN ==================== -->
+        <section id="so-sanh-thuyet-trinh" class="space-y-10">
+            
+            <!-- Phần 5.1: Bảng so sánh trực quan 3 mô hình nhà ở vùng lũ -->
+            <div class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-100 pb-5">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-sky-600">Đánh giá hiệu quả kỹ thuật</span>
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-slate-800 uppercase tracking-tight">
+                            BẢNG SO SÁNH 3 MÔ HÌNH NHÀ Ở VÙNG LŨ
+                        </h2>
+                    </div>
+                    <span class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-sky-50 text-sky-800 border border-sky-200">
+                        Lý do lựa chọn giải pháp Nhà chống lũ kết hợp Phao nổi
+                    </span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                        <thead>
+                            <tr class="border-b-2 border-slate-200 text-slate-600">
+                                <th class="py-3.5 px-4 font-extrabold uppercase text-xs">Tiêu chí đánh giá</th>
+                                <th class="py-3.5 px-4 font-bold">1. Nhà cấp 4 thông thường</th>
+                                <th class="py-3.5 px-4 font-bold">2. Nhà sàn cố định truyền thống</th>
+                                <th class="py-3.5 px-4 font-extrabold text-sky-900 bg-sky-50 rounded-t-xl border-x border-t border-sky-200">
+                                    ⭐ 3. Ngôi nhà chống lũ (Mô hình STEM)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200/80">
+                            <tr>
+                                <td class="py-3.5 px-4 font-bold text-slate-800">Khi lũ vượt đỉnh cột (>1.5m)</td>
+                                <td class="py-3.5 px-4 text-rose-600 font-medium">✗ Ngập sâu toàn bộ nhà</td>
+                                <td class="py-3.5 px-4 text-amber-700 font-medium">⚠️ Ngập sàn khi lũ lịch sử</td>
+                                <td class="py-3.5 px-4 font-bold text-teal-800 bg-sky-50/60 border-x border-sky-200">
+                                    ✓ Phao tự động nâng nhà nổi lên theo nước
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="py-3.5 px-4 font-bold text-slate-800">Chi phí & Nguồn vật liệu</td>
+                                <td class="py-3.5 px-4 text-slate-600">Tốn kém chi phí sửa chữa sau lũ</td>
+                                <td class="py-3.5 px-4 text-slate-600">Cần nhiều gỗ lớn, chi phí cao</td>
+                                <td class="py-3.5 px-4 font-bold text-teal-800 bg-sky-50/60 border-x border-sky-200">
+                                    ✓ Tận dụng vật liệu sẵn có, tái chế (tiết kiệm)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="py-3.5 px-4 font-bold text-slate-800">Khả năng tự cấp nước sạch</td>
+                                <td class="py-3.5 px-4 text-rose-600 font-medium">✗ Bể ngầm dễ bị tràn nước bẩn</td>
+                                <td class="py-3.5 px-4 text-amber-700 font-medium">⚠️ Phụ thuộc nguồn nước dưới đất</td>
+                                <td class="py-3.5 px-4 font-bold text-teal-800 bg-sky-50/60 border-x border-sky-200">
+                                    ✓ Bể nước trên cao + Mái dốc thu nước mưa
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="py-3.5 px-4 font-bold text-slate-800">Phương tiện ứng cứu tại chỗ</td>
+                                <td class="py-3.5 px-4 text-slate-600">Không có sẵn, chờ cứu hộ</td>
+                                <td class="py-3.5 px-4 text-slate-600">Ít khi kết hợp bến thuyền nổi</td>
+                                <td class="py-3.5 px-4 font-bold text-teal-800 bg-sky-50/60 border-x border-sky-200">
+                                    ✓ Có sẵn thuyền cứu hộ & cầu tạm lên xuống
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="py-3.5 px-4 font-bold text-slate-800">Tác động môi trường & Giáo dục</td>
+                                <td class="py-3.5 px-4 text-slate-600">Bình thường</td>
+                                <td class="py-3.5 px-4 text-slate-600">Bình thường</td>
+                                <td class="py-3.5 px-4 font-bold text-teal-800 bg-sky-50/60 rounded-b-xl border-x border-b border-sky-200">
+                                    ✓ Giảm rác thải nhựa + Tuyên truyền an toàn
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Phần 5.2: Nội Dung Thuyết Trình Sản Phẩm 6 Phần (Tổ 4 - Lớp 9A5) -->
+            <div class="bg-white rounded-3xl p-6 sm:p-10 border border-amber-200 shadow-sm space-y-6">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+                    <div class="flex items-center gap-3">
+                        <span class="w-9 h-9 rounded-full bg-amber-500 text-white font-extrabold flex items-center justify-center text-sm shrink-0">6</span>
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-amber-700">Bài thuyết trình báo cáo dự án STEM</span>
+                            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-800 uppercase tracking-tight">
+                                NỘI DUNG THUYẾT TRÌNH SẢN PHẨM – TỔ 4 LỚP 9A5
+                            </h2>
+                        </div>
+                    </div>
+
+                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 font-extrabold text-xs sm:text-sm self-start lg:self-auto">
+                        <span>🏫 Thực hiện: Tổ 4 – Lớp 9A5</span>
+                    </span>
+                </div>
+
+                <p class="text-xs sm:text-sm text-slate-600">
+                    Bấm vào từng thẻ (1 → 6) bên dưới để làm nổi bật ý chính khi đang thuyết trình trước lớp hoặc ban giám khảo:
+                </p>
+
+                <!-- 6 Thẻ Gợi Ý Thuyết Trình Tương Tác (Matching Poster Section 6) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div data-pres-card="1" class="pres-card cursor-pointer p-5 rounded-2xl border-2 border-sky-600 bg-sky-50/70 transition-all space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded-full bg-sky-600 text-white font-bold text-xs">Phần 1 / 6</span>
+                            <span class="text-xs font-semibold text-sky-800">Tổ 4 – 9A5</span>
+                        </div>
+                        <h3 class="font-extrabold text-slate-800 text-base">1. Tên sản phẩm</h3>
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            “Em xin đại diện <strong>Tổ 4 – Lớp 9A5</strong> giới thiệu sản phẩm <strong>Chủ đề STEM: Mô hình Ngôi nhà chống lũ</strong> kết hợp các giải pháp kỹ thuật an toàn và tuyên truyền phòng tránh thiên tai.”
+                        </p>
+                    </div>
+
+                    <div data-pres-card="2" class="pres-card cursor-pointer p-5 rounded-2xl border border-slate-200 bg-slate-50/60 hover:border-sky-300 transition-all space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700 font-bold text-xs">Phần 2 / 6</span>
+                            <span class="text-xs font-mono text-slate-500">~25 giây</span>
+                        </div>
+                        <h3 class="font-extrabold text-slate-800 text-base">2. Ý tưởng và thông điệp</h3>
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            “Xuất phát từ thực tế mưa lũ gây ngập lụt hàng năm, nhóm thiết kế ngôi nhà với thông điệp: <em>Sáng tạo hôm nay – Cuộc sống an toàn hơn ngày mai!</em>”
+                        </p>
+                    </div>
+
+                    <div data-pres-card="3" class="pres-card cursor-pointer p-5 rounded-2xl border border-slate-200 bg-slate-50/60 hover:border-sky-300 transition-all space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700 font-bold text-xs">Phần 3 / 6</span>
+                            <span class="text-xs font-mono text-slate-500">~35 giây</span>
+                        </div>
+                        <h3 class="font-extrabold text-slate-800 text-base">3. Các giải pháp kỹ thuật</h3>
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            “Mô hình tích hợp: nhà sàn cao có cột định vị, dàn phao nổi bằng vỏ chai nhựa và xốp, mái dốc gắn pin mặt trời, bể chứa nước sạch trên cao và thuyền cứu hộ.”
+                        </p>
+                    </div>
+
+                    <div data-pres-card="4" class="pres-card cursor-pointer p-5 rounded-2xl border border-slate-200 bg-slate-50/60 hover:border-sky-300 transition-all space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700 font-bold text-xs">Phần 4 / 6</span>
+                            <span class="text-xs font-mono text-slate-500">~35 giây</span>
+                        </div>
+                        <h3 class="font-extrabold text-slate-800 text-base">4. Cách hoạt động</h3>
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            “Khi nước ngập nhẹ, nhà đứng vững trên cột sàn cao. Khi lũ dâng vượt chân cột, lực đẩy Ác-si-mét từ hệ phao chai nhựa sẽ nâng toàn bộ ngôi nhà nổi lên theo mặt nước.”
+                        </p>
+                    </div>
+
+                    <div data-pres-card="5" class="pres-card cursor-pointer p-5 rounded-2xl border border-slate-200 bg-slate-50/60 hover:border-sky-300 transition-all space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700 font-bold text-xs">Phần 5 / 6</span>
+                            <span class="text-xs font-mono text-slate-500">~25 giây</span>
+                        </div>
+                        <h3 class="font-extrabold text-slate-800 text-base">5. Lợi ích đối với cộng đồng</h3>
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            “Giúp bảo vệ tính mạng, tài sản người dân vùng lũ, chủ động nguồn nước sạch sinh hoạt và góp phần tái chế rác thải nhựa bảo vệ môi trường.”
+                        </p>
+                    </div>
+
+                    <div data-pres-card="6" class="pres-card cursor-pointer p-5 rounded-2xl border border-slate-200 bg-slate-50/60 hover:border-sky-300 transition-all space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700 font-bold text-xs">Phần 6 / 6</span>
+                            <span class="text-xs font-mono text-slate-500">~20 giây</span>
+                        </div>
+                        <h3 class="font-extrabold text-slate-800 text-base">6. Lời kêu gọi hành động</h3>
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            “Nhóm kêu gọi mọi người hãy luôn chủ động trang bị kiến thức, chuẩn bị túi đồ khẩn cấp để phòng, tránh lũ lụt và xây dựng cộng đồng an toàn hơn!”
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== MỤC 6: CẨM NANG TUYÊN TRUYỀN PHÒNG TRÁNH LŨ LỤT & ỨNG PHÓ KHẨN CẤP ==================== -->
+        <section id="cam-nang-an-toan" class="space-y-8">
+            
+            <!-- Khối 6.1: Khuyến cáo an toàn 3 giai đoạn (Trước - Trong - Sau mùa lũ) -->
+            <div class="bg-sky-900 text-white rounded-3xl p-6 sm:p-10 shadow-sm space-y-6">
+                <div class="text-center max-w-2xl mx-auto space-y-2">
+                    <span class="inline-block px-3.5 py-1 rounded-full bg-sky-700 text-sky-100 text-xs font-bold uppercase tracking-wider">
+                        Cẩm nang tuyên truyền phòng, tránh lũ lụt
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                        KỸ NĂNG AN TOÀN TRƯỚC – TRONG – SAU MÙA LŨ
+                    </h2>
+                    <p class="text-sky-200 text-xs sm:text-sm">
+                        Trang thông tin tuyên truyền trực tuyến giúp người dân và học sinh tra cứu nhanh các nguyên tắc an toàn:
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+                    <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-5 space-y-3">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-xl bg-sky-500 text-white font-bold flex items-center justify-center text-sm">01</span>
+                            <h3 class="font-bold text-lg text-white">Trước mùa lũ</h3>
+                        </div>
+                        <ul class="space-y-2 text-xs sm:text-sm text-sky-100 leading-relaxed">
+                            <li>• Theo dõi sát bản tin dự báo thời tiết và cảnh báo mưa lũ tại địa phương.</li>
+                            <li>• Gia cố nhà cửa, kiểm tra hệ thống phao nổi và kê cao đồ đạc, thiết bị điện.</li>
+                            <li>• Dự trữ nước uống sạch trên bể cao, lương khô, đèn pin và túi thuốc y tế.</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-5 space-y-3">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-xl bg-amber-500 text-white font-bold flex items-center justify-center text-sm">02</span>
+                            <h3 class="font-bold text-lg text-white">Trong khi lũ dâng</h3>
+                        </div>
+                        <ul class="space-y-2 text-xs sm:text-sm text-sky-100 leading-relaxed">
+                            <li>• Ngắt ngay cầu dao điện, khóa van bình gas và di chuyển lên tầng tránh lũ.</li>
+                            <li>• Tuyệt đối không lội qua dòng nước chảy xiết, ngầm tràn hoặc vớt củi khi lũ lớn.</li>
+                            <li>• Mặc áo phao khi di chuyển bằng thuyền cứu hộ và giữ liên lạc với đội cứu nạn.</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-5 space-y-3">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-xl bg-teal-500 text-white font-bold flex items-center justify-center text-sm">03</span>
+                            <h3 class="font-bold text-lg text-white">Sau khi lũ rút</h3>
+                        </div>
+                        <ul class="space-y-2 text-xs sm:text-sm text-sky-100 leading-relaxed">
+                            <li>• Kiểm tra độ an toàn của kết cấu nhà và đường dây điện trước khi bật cầu dao.</li>
+                            <li>• Thực hiện “nước rút đến đâu làm vệ sinh môi trường, khử khuẩn nguồn nước đến đó”.</li>
+                            <li>• Ăn chín uống sôi, phòng ngừa các dịch bệnh tiêu hóa và sốt xuất huyết sau lũ.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Khối 6.2: Trắc nghiệm nhanh 3 câu hỏi kỹ năng ứng phó lũ lụt -->
+            <div class="bg-white rounded-3xl p-6 sm:p-10 border border-sky-200 shadow-sm space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+                    <div class="flex items-start sm:items-center gap-3">
+                        <span class="w-10 h-10 rounded-2xl bg-sky-600 text-white font-bold flex items-center justify-center text-lg shrink-0 shadow-sm">🧠</span>
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-sky-600">Kiểm tra nhanh kiến thức an toàn</span>
+                            <h3 class="text-xl sm:text-2xl font-extrabold text-slate-800 tracking-tight">
+                                TRẮC NGHIỆM: BẠN ĐÃ BIẾT CÁCH ỨNG PHÓ LŨ LỤT?
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span id="quizScoreBadge" class="px-3.5 py-1.5 rounded-xl bg-sky-50 border border-sky-200 text-sky-800 font-bold text-xs sm:text-sm">
+                            Điểm số: 0/3 câu đúng
+                        </span>
+                        <button id="resetQuizBtn" type="button" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs transition-colors">
+                            ↺ Làm lại
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <!-- Câu 1 -->
+                    <div class="quiz-card bg-slate-50 rounded-2xl p-5 border border-slate-200 flex flex-col justify-between space-y-4" data-question="1" data-correct="B">
+                        <div class="space-y-3">
+                            <span class="inline-block px-2.5 py-0.5 rounded-md bg-sky-100 text-sky-800 font-bold text-xs">Câu hỏi 1</span>
+                            <p class="font-bold text-slate-800 text-sm leading-snug">
+                                Khi phát hiện nước lũ bắt đầu dâng tràn vào nhà, việc làm nào cần ưu tiên thực hiện ĐẦU TIÊN?
+                            </p>
+                            <div class="space-y-2 pt-1">
+                                <button type="button" data-option="A" class="quiz-option w-full text-left p-2.5 rounded-xl text-xs sm:text-sm bg-white border border-slate-200 hover:border-sky-400 transition-all">
+                                    <strong>A.</strong> Lội ra ngoài vớt củi và đồ đạc trôi nổi.
+                                </button>
+                                <button type="button" data-option="B" class="quiz-option w-full text-left p-2.5 rounded-xl text-xs sm:text-sm bg-white border border-slate-200 hover:border-sky-400 transition-all">
+                                    <strong>B.</strong> Ngắt ngay cầu dao điện, khóa van bình gas và di chuyển lên tầng cao.
+                                </button>
+                                <button type="button" data-option="C" class="quiz-option w-full text-left p-2.5 rounded-xl text-xs sm:text-sm bg-white border border-slate-200 hover:border-sky-400 transition-all">
+                                    <strong>C.</strong> Cắm sạc tất cả thiết bị điện ở ổ cắm dưới thấp.
+                                </button>
+                            </div>
+                        </div>
+                        <p class="quiz-feedback hidden text-xs p-3 rounded-xl font-medium"></p>
+                    </div>
+
+                    <!-- Câu 2 -->
+                    <div class="quiz-card bg-slate-50 rounded-2xl p-5 border border-slate-200 flex flex-col justify-between space-y-4" data-question="2" data-correct="A">
+                        <div class="space-y-3">
+                            <span class="inline-block px-2.5 py-0.5 rounded-md bg-sky-100 text-sky-800 font-bold text-xs">Câu hỏi 2</span>
+                            <p class="font-bold text-slate-800 text-sm leading-snug">
+                                Vì sao trong mô hình Ngôi nhà chống lũ, bể chứa nước sạch lại được đặt ở vị trí trên cao?
+                            </p>
+                            <div class="space-y-2 pt-1">
+                                <button type="button" data-option="A" class="quiz-option w-full text-left p-2.5 rounded-xl text-xs sm:text-sm bg-white border border-slate-200 hover:border-sky-400 transition-all">
+                                    <strong>A.</strong> Tránh bị nước lũ làm ô nhiễm và tạo áp lực nước chảy tự nhiên.
+                                </button>
+                                <button type="button" data-option="B" class="quiz-option w-full text-left p-2.5 rounded-xl text-xs sm:text-sm bg-white border border-slate-200 hover:border-sky-400 transition-all">
+                                    <strong>B.</strong> Để làm ngôi nhà nặng hơn không bị nổi lên.
+                                </button>
+                                <button type="button" data-option="C" class="quiz-option w-full text-left p-2.5 rounded-xl text-xs sm:text-sm bg-white border border-slate-200 hover:border-sky-400 transition-all">
+                                    <strong>C.</strong> Chỉ để trang trí cho mô hình đẹp mắt hơn.
+                                </button>
+                            </div>
+                        </div>
+                        <p class="quiz-feedback hidden text-xs p-3 rounded-xl font-medium"></p>
+                    </div>
+
+                    <!-- Câu 3 -->
+                    <div class="quiz-card bg-slate-50 rounded-2xl p-5 border border-slate-200 flex flex-col justify-between space-y-4" data-question="3" data-correct="C">
+                        <div class="space-y-3">
+                            <span class="inline-block px-2.5 py-0.5 rounded-md bg-sky-100 text-sky-800 font-bold text-xs">Câu hỏi 3</span>
+                            <p class="font-bold text-slate-800 text-sm leading-snug">
+                                Khi gặp đoạn đường ngầm tràn hoặc cầu nhỏ đang có dòng nước lũ chảy xiết, bạn nên xử lý thế nào?
+                            </p>
+                            <div class="space-y-2 pt-1">
+                                <button type="button" data-option="A" class="quiz-option w-full text-left p-2.5 rounded-xl text-xs sm:text-sm bg-white border border-slate-200 hover:border-sky-400 transition-all">
+                                    <strong>A.</strong> Chạy thật nhanh qua trước khi nước dâng cao hơn.
+                                </button>
+                                <button type="button" data-option="B" class="quiz-option w-full text-left p-2.5 rounded-xl text-xs sm:text-sm bg-white border border-slate-200 hover:border-sky-400 transition-all">
+                                    <strong>B.</strong> Đạp xe qua để giữ thăng bằng tốt hơn.
+                                </button>
+                                <button type="button" data-option="C" class="quiz-option w-full text-left p-2.5 rounded-xl text-xs sm:text-sm bg-white border border-slate-200 hover:border-sky-400 transition-all">
+                                    <strong>C.</strong> Tuyệt đối không băng qua; dừng lại ở nơi cao ráo và tuân thủ biển cảnh báo.
+                                </button>
+                            </div>
+                        </div>
+                        <p class="quiz-feedback hidden text-xs p-3 rounded-xl font-medium"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Khối 6.3: Danh sách kiểm tra "Túi đồ khẩn cấp mùa lũ" + Cụm nút gọi cứu hộ SOS -->
+            <div class="bg-white rounded-3xl p-6 sm:p-10 border border-sky-200 shadow-sm space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+                    <div class="flex items-start sm:items-center gap-3">
+                        <span class="w-10 h-10 rounded-2xl bg-teal-600 text-white font-bold flex items-center justify-center text-lg shrink-0 shadow-sm">🎒</span>
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-teal-700">Tiện ích kiểm tra sự sẵn sàng của gia đình</span>
+                            <h3 class="text-xl sm:text-2xl font-extrabold text-slate-800 tracking-tight">
+                                DANH SÁCH KIỂM TRA “TÚI ĐỒ KHẨN CẤP MÙA LŨ”
+                            </h3>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <button id="checkAllItemsBtn" type="button" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-200 transition-colors">
+                            ✓ Chọn tất cả
+                        </button>
+                        <button id="resetChecklistBtn" type="button" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">
+                            ↺ Làm mới
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Thanh tiến độ phần trăm -->
+                <div class="bg-slate-50 p-4 sm:p-5 rounded-2xl border border-slate-200 space-y-2.5">
+                    <div class="flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm">
+                        <span id="checklistCounterText" class="font-bold text-slate-800">Đã chuẩn bị: 0/8 vật dụng thiết yếu (0%)</span>
+                        <span id="checklistStatusBadge" class="px-3 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800">
+                            Cần chuẩn bị thêm
+                        </span>
+                    </div>
+                    <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
+                        <div id="checklistProgressBar" class="h-full bg-teal-600 rounded-full transition-all duration-300" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <!-- Lưới 8 vật dụng thiết yếu -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+                    <label class="checklist-card cursor-pointer p-4 rounded-2xl border border-slate-200 bg-white hover:border-sky-300 transition-all flex items-start gap-3 select-none">
+                        <input type="checkbox" class="emergency-checkbox mt-1 w-4 h-4 accent-teal-600 rounded cursor-pointer">
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm">💧 Nước sạch & Lương khô</p>
+                            <p class="text-xs text-slate-500 mt-0.5">Đủ dùng tối thiểu trong 3 – 5 ngày bị cô lập.</p>
+                        </div>
+                    </label>
+
+                    <label class="checklist-card cursor-pointer p-4 rounded-2xl border border-slate-200 bg-white hover:border-sky-300 transition-all flex items-start gap-3 select-none">
+                        <input type="checkbox" class="emergency-checkbox mt-1 w-4 h-4 accent-teal-600 rounded cursor-pointer">
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm">🔦 Đèn pin & Pin dự phòng</p>
+                            <p class="text-xs text-slate-500 mt-0.5">Chiếu sáng và phát tín hiệu khi mất điện diện rộng.</p>
+                        </div>
+                    </label>
+
+                    <label class="checklist-card cursor-pointer p-4 rounded-2xl border border-slate-200 bg-white hover:border-sky-300 transition-all flex items-start gap-3 select-none">
+                        <input type="checkbox" class="emergency-checkbox mt-1 w-4 h-4 accent-teal-600 rounded cursor-pointer">
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm">🩹 Túi thuốc y tế cá nhân</p>
+                            <p class="text-xs text-slate-500 mt-0.5">Băng gạc, thuốc sát trùng, thuốc hạ sốt & đặc trị.</p>
+                        </div>
+                    </label>
+
+                    <label class="checklist-card cursor-pointer p-4 rounded-2xl border border-slate-200 bg-white hover:border-sky-300 transition-all flex items-start gap-3 select-none">
+                        <input type="checkbox" class="emergency-checkbox mt-1 w-4 h-4 accent-teal-600 rounded cursor-pointer">
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm">🦺 Áo phao cứu sinh</p>
+                            <p class="text-xs text-slate-500 mt-0.5">Trang bị sẵn cho tất cả thành viên, nhất là trẻ nhỏ.</p>
+                        </div>
+                    </label>
+
+                    <label class="checklist-card cursor-pointer p-4 rounded-2xl border border-slate-200 bg-white hover:border-sky-300 transition-all flex items-start gap-3 select-none">
+                        <input type="checkbox" class="emergency-checkbox mt-1 w-4 h-4 accent-teal-600 rounded cursor-pointer">
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm">📯 Còi báo hiệu cứu hộ</p>
+                            <p class="text-xs text-slate-500 mt-0.5">Phát âm thanh lớn gọi đội cứu hộ khi trời tối.</p>
+                        </div>
+                    </label>
+
+                    <label class="checklist-card cursor-pointer p-4 rounded-2xl border border-slate-200 bg-white hover:border-sky-300 transition-all flex items-start gap-3 select-none">
+                        <input type="checkbox" class="emergency-checkbox mt-1 w-4 h-4 accent-teal-600 rounded cursor-pointer">
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm">🔋 Sạc dự phòng đầy pin</p>
+                            <p class="text-xs text-slate-500 mt-0.5">Duy trì liên lạc điện thoại khẩn cấp với cứu nạn.</p>
+                        </div>
+                    </label>
+
+                    <label class="checklist-card cursor-pointer p-4 rounded-2xl border border-slate-200 bg-white hover:border-sky-300 transition-all flex items-start gap-3 select-none">
+                        <input type="checkbox" class="emergency-checkbox mt-1 w-4 h-4 accent-teal-600 rounded cursor-pointer">
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm">📁 Giấy tờ bọc túi chống nước</p>
+                            <p class="text-xs text-slate-500 mt-0.5">Bảo quản giấy tờ tùy thân quan trọng trong túi zip.</p>
+                        </div>
+                    </label>
+
+                    <label class="checklist-card cursor-pointer p-4 rounded-2xl border border-slate-200 bg-white hover:border-sky-300 transition-all flex items-start gap-3 select-none">
+                        <input type="checkbox" class="emergency-checkbox mt-1 w-4 h-4 accent-teal-600 rounded cursor-pointer">
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm">🪢 Dây thừng & Dụng cụ đa năng</p>
+                            <p class="text-xs text-slate-500 mt-0.5">Hỗ trợ neo buộc thuyền cứu hộ và gia cố đồ đạc.</p>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- Cụm Nút Gọi Cứu Hộ Khẩn Cấp (SOS Quick Call) -->
+                <div class="pt-4 border-t border-slate-100">
+                    <div class="bg-rose-50/80 border border-rose-200 rounded-2xl p-4 sm:p-5 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+                        <div class="space-y-1">
+                            <p class="text-xs font-extrabold uppercase tracking-wider text-rose-700 flex items-center gap-1.5">
+                                📞 Tổng đài cứu hộ khẩn cấp quốc gia (Bấm để gọi ngay trên điện thoại)
+                            </p>
+                            <p class="text-xs text-slate-600">
+                                Liên hệ ngay khi cần trợ giúp sơ tán, cứu nạn cứu hộ hoặc cấp cứu y tế trong mùa mưa lũ:
+                            </p>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 w-full lg:w-auto shrink-0">
+                            <a href="tel:112" class="px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all">
+                                <span>🚨 Gọi 112</span>
+                                <span class="font-normal opacity-90">(Tìm kiếm cứu nạn)</span>
+                            </a>
+                            <a href="tel:114" class="px-4 py-2.5 rounded-xl bg-white hover:bg-rose-100 text-rose-700 border border-rose-300 font-bold text-xs flex items-center justify-center gap-2 transition-all">
+                                <span>🚒 Gọi 114</span>
+                                <span class="font-normal text-slate-600">(Cứu hộ cứu nạn)</span>
+                            </a>
+                            <a href="tel:115" class="px-4 py-2.5 rounded-xl bg-white hover:bg-rose-100 text-rose-700 border border-rose-300 font-bold text-xs flex items-center justify-center gap-2 transition-all">
+                                <span>🚑 Gọi 115</span>
+                                <span class="font-normal text-slate-600">(Cấp cứu y tế)</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ==================== CHÂN TRANG (FOOTER) ==================== -->
+    <footer class="border-t border-slate-200 bg-white py-8 mt-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 text-center sm:text-left">
+            <p class="font-bold text-slate-800">CHỦ ĐỀ STEM: NGÔI NHÀ CHỐNG LŨ • BÀI THUYẾT TRÌNH TỔ 4 – LỚP 9A5</p>
+            <p class="italic text-sky-800 font-semibold">“Chủ động phòng tránh lũ lụt – Bảo vệ cuộc sống – Cùng xây dựng cộng đồng an toàn hơn!”</p>
+        </div>
+    </footer>
+
+    <!-- ==================== MODAL PHÓNG TO ẢNH SẢN PHẨM THỰC TẾ (LIGHTBOX) ==================== -->
+    <div id="imageLightboxModal" class="fixed inset-0 z-50 hidden bg-slate-950/90 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="relative max-w-5xl w-full flex flex-col items-center">
+            <button id="closeLightboxBtn" type="button" class="self-end mb-3 px-4 py-1.5 rounded-full bg-white/15 hover:bg-white/25 text-white text-xs font-bold transition-colors">
+                ✕ Đóng cửa sổ (ESC)
+            </button>
+            <img id="lightboxModalImg" src="hinhanh.jpg" alt="Phóng to hình ảnh sản phẩm thực tế" class="max-h-[82vh] w-auto rounded-2xl border-2 border-white/20 shadow-2xl object-contain bg-slate-900">
+            <p class="text-xs text-sky-200 mt-3 font-medium">Chủ đề STEM: Mô hình Ngôi Nhà Chống Lũ hoàn thiện thực tế – Tổ 4 Lớp 9A5</p>
+        </div>
+    </div>
+
+    <!-- ==================== SCRIPT XỬ LÝ TƯƠNG TÁC ==================== -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            // 0. Xử lý tải ảnh hinhanh.jpg thông minh (Hỗ trợ cả GitHub Pages, Raw GitHub & Mở file trực tiếp trên máy) + Lightbox
+            const realProductImg = document.getElementById("realProductImg");
+            const imgFallbackNotice = document.getElementById("imgFallbackNotice");
+            const localImagePicker = document.getElementById("localImagePicker");
+            const openLightboxBtn = document.getElementById("openLightboxBtn");
+            const imageLightboxModal = document.getElementById("imageLightboxModal");
+            const lightboxModalImg = document.getElementById("lightboxModalImg");
+            const closeLightboxBtn = document.getElementById("closeLightboxBtn");
+
+            const fallbackUrls = [
+                "https://raw.githubusercontent.com/GreensVN/ngoinhachonglu/main/hinhanh.jpg",
+                "https://raw.githubusercontent.com/GreensVN/ngoinhachonglu/master/hinhanh.jpg",
+                "https://greensvn.github.io/ngoinhachonglu/hinhanh.jpg"
+            ];
+            let fallbackIndex = 0;
+
+            if (realProductImg) {
+                realProductImg.addEventListener("error", function () {
+                    if (fallbackIndex < fallbackUrls.length) {
+                        realProductImg.src = fallbackUrls[fallbackIndex];
+                        fallbackIndex++;
+                    } else {
+                        realProductImg.classList.add("hidden");
+                        if (imgFallbackNotice) imgFallbackNotice.classList.remove("hidden");
+                    }
+                });
+
+                realProductImg.addEventListener("load", function () {
+                    realProductImg.classList.remove("hidden");
+                    if (imgFallbackNotice) imgFallbackNotice.classList.add("hidden");
+                    if (lightboxModalImg) lightboxModalImg.src = realProductImg.src;
+                });
+            }
+
+            if (localImagePicker) {
+                localImagePicker.addEventListener("change", function (e) {
+                    const file = e.target.files && e.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = function (ev) {
+                        realProductImg.src = ev.target.result;
+                        realProductImg.classList.remove("hidden");
+                        if (imgFallbackNotice) imgFallbackNotice.classList.add("hidden");
+                        if (lightboxModalImg) lightboxModalImg.src = ev.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            function openLightbox() {
+                if (!realProductImg || realProductImg.classList.contains("hidden")) return;
+                lightboxModalImg.src = realProductImg.src;
+                imageLightboxModal.classList.remove("hidden");
+            }
+
+            function closeLightbox() {
+                imageLightboxModal.classList.add("hidden");
+            }
+
+            if (openLightboxBtn) openLightboxBtn.addEventListener("click", openLightbox);
+            if (realProductImg) realProductImg.addEventListener("click", openLightbox);
+            if (closeLightboxBtn) closeLightboxBtn.addEventListener("click", closeLightbox);
+            if (imageLightboxModal) {
+                imageLightboxModal.addEventListener("click", function (e) {
+                    if (e.target === imageLightboxModal) closeLightbox();
+                });
+            }
+            document.addEventListener("keydown", function (e) {
+                if (e.key === "Escape") closeLightbox();
+            });
+
+            // 1. Chuyển đổi Chế độ Môi trường trên Mô hình Số hóa (Ban ngày vs. Đêm mưa bão)
+            const envDayBtn = document.getElementById("envDayBtn");
+            const envStormBtn = document.getElementById("envStormBtn");
+            const twinSkyRect = document.getElementById("twinSkyRect");
+            const twinSunGroup = document.getElementById("twinSunGroup");
+            const twinStormGroup = document.getElementById("twinStormGroup");
+            const twinWindowLeft = document.getElementById("twinWindowLeft");
+            const twinWindowRight = document.getElementById("twinWindowRight");
+            const twinDoorGlass = document.getElementById("twinDoorGlass");
+            const twinPorchLightGlow = document.getElementById("twinPorchLightGlow");
+
+            function setDigitalTwinEnvironment(mode) {
+                if (mode === "storm") {
+                    twinSkyRect.setAttribute("fill", "url(#skyStormGrad)");
+                    twinSunGroup.classList.add("hidden");
+                    twinStormGroup.classList.remove("hidden");
+                    twinWindowLeft.setAttribute("fill", "#fde047");
+                    twinWindowRight.setAttribute("fill", "#fde047");
+                    twinDoorGlass.setAttribute("fill", "#fef08a");
+                    twinPorchLightGlow.classList.remove("hidden");
+
+                    envStormBtn.className = "px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-amber-300 shadow-sm transition-all";
+                    envDayBtn.className = "px-3 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:border-sky-300 transition-all";
+                } else {
+                    twinSkyRect.setAttribute("fill", "url(#skyDayGrad)");
+                    twinSunGroup.classList.remove("hidden");
+                    twinStormGroup.classList.add("hidden");
+                    twinWindowLeft.setAttribute("fill", "#bae6fd");
+                    twinWindowRight.setAttribute("fill", "#bae6fd");
+                    twinDoorGlass.setAttribute("fill", "#e0f2fe");
+                    twinPorchLightGlow.classList.add("hidden");
+
+                    envDayBtn.className = "px-3 py-1.5 rounded-xl text-xs font-bold bg-sky-600 text-white shadow-sm transition-all";
+                    envStormBtn.className = "px-3 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:border-sky-300 transition-all";
+                }
+            }
+
+            envDayBtn.addEventListener("click", function () { setDigitalTwinEnvironment("day"); });
+            envStormBtn.addEventListener("click", function () { setDigitalTwinEnvironment("storm"); });
+
+            // 2. Xử lý 5 Điểm chạm thông tin (Hotspots 1 - 5) trên Mô hình Số hóa SVG
+            const hotspotData = {
+                "1": {
+                    title: "Hệ thống mái dốc thoát nước & Pin năng lượng mặt trời",
+                    tag: "Vật liệu: Bìa carton, giấy màu & tấm pin mô hình",
+                    desc: "Mái thiết kế độ dốc 40° giúp thoát nước mưa cực nhanh, giảm tải trọng lên khung nhà sàn; tích hợp tấm pin năng lượng mặt trời cung cấp điện chiếu sáng độc lập khi mất điện lưới."
+                },
+                "2": {
+                    title: "Bể chứa nước sạch trên cao",
+                    tag: "Vật liệu: Vỏ chai nhựa xanh & giàn que gỗ",
+                    desc: "Đặt trên giàn gỗ cao ráo giúp nguồn nước sinh hoạt không bị nhiễm bẩn khi lũ dâng, đồng thời tạo áp lực nước chảy tự nhiên và thu gom nước mưa từ mái dốc."
+                },
+                "3": {
+                    title: "Khu vực tránh lũ an toàn (Tầng cao)",
+                    tag: "Vật liệu: Bìa carton, que gỗ & thanh tre",
+                    desc: "Không gian sinh hoạt chính và gác áp mái được đặt trên hệ khung nhà sàn cao ráo, có lan can bảo vệ chắc chắn giúp sơ tán người và tài sản quý giá."
+                },
+                "4": {
+                    title: "Hệ thống phao nổi bằng chai nhựa tái chế",
+                    tag: "Nguyên lý: Lực đẩy Ác-si-mét (F_A = d × V)",
+                    desc: "Gồm các vỏ chai nhựa rỗng đậy kín nắp kết hợp tấm mút xốp gắn chặt dưới gầm sàn. Khi nước lũ vượt qua chân cột, hệ phao tự động đẩy toàn bộ ngôi nhà nổi lên."
+                },
+                "5": {
+                    title: "Thuyền cứu hộ dân dụng & Cầu thang",
+                    tag: "Vật liệu: Bìa carton chống thấm & que tre",
+                    desc: "Thuyền cứu hộ được neo sẵn ngay tại bến cầu tạm chân cầu thang, giúp gia đình chủ động di chuyển khẩn cấp hoặc tiếp nhận nhu yếu phẩm cứu trợ."
+                }
+            };
+
+            const hotspotPins = document.querySelectorAll(".hotspot-pin");
+            const hotspotQuickBtns = document.querySelectorAll(".hotspot-quick-btn");
+            const hotspotBadge = document.getElementById("hotspotBadge");
+            const hotspotTitle = document.getElementById("hotspotTitle");
+            const hotspotTag = document.getElementById("hotspotTag");
+            const hotspotDesc = document.getElementById("hotspotDesc");
+            const hotspotsContainer = document.getElementById("hotspotsContainer");
+            const toggleHotspotsBtn = document.getElementById("toggleHotspotsBtn");
+
+            function selectHotspot(id) {
+                const info = hotspotData[id];
+                if (!info) return;
+
+                hotspotBadge.textContent = id;
+                hotspotTitle.textContent = info.title;
+                hotspotTag.textContent = info.tag;
+                hotspotDesc.textContent = info.desc;
+
+                hotspotPins.forEach(function (pin) {
+                    pin.classList.toggle("active", pin.getAttribute("data-hotspot") === id);
+                });
+
+                hotspotQuickBtns.forEach(function (btn) {
+                    if (btn.getAttribute("data-hotspot-btn") === id) {
+                        btn.className = "hotspot-quick-btn text-xs font-semibold px-2.5 py-1 rounded-lg bg-sky-600 text-white transition-all";
+                    } else {
+                        btn.className = "hotspot-quick-btn text-xs font-semibold px-2.5 py-1 rounded-lg bg-white text-slate-600 border border-slate-200 hover:border-sky-300 transition-all";
+                    }
+                });
+
+                ["1", "2", "3", "4", "5"].forEach(function (partNum) {
+                    const svgGroup = document.getElementById("svgPart" + partNum);
+                    if (svgGroup) {
+                        svgGroup.classList.toggle("part-active", partNum === id);
+                    }
+                });
+            }
+
+            hotspotPins.forEach(function (pin) {
+                pin.addEventListener("click", function () {
+                    selectHotspot(pin.getAttribute("data-hotspot"));
+                });
+            });
+
+            hotspotQuickBtns.forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    selectHotspot(btn.getAttribute("data-hotspot-btn"));
+                });
+            });
+
+            let hotspotsVisible = true;
+            toggleHotspotsBtn.addEventListener("click", function () {
+                hotspotsVisible = !hotspotsVisible;
+                hotspotsContainer.style.display = hotspotsVisible ? "block" : "none";
+                toggleHotspotsBtn.textContent = hotspotsVisible ? "Ẩn điểm chạm (1-5)" : "Hiện điểm chạm (1-5)";
+            });
+
+            // 3. Xử lý Bản vẽ kỹ thuật CAD 3 góc nhìn
+            const cadViewsData = {
+                front: {
+                    header: "GÓC CHIẾU: NHÌN TỪ TRƯỚC (FRONT VIEW)",
+                    badge: "Góc nhìn 1/3: Nhìn từ trước",
+                    title: "Mặt chính diện Ngôi nhà chống lũ",
+                    desc: "Thể hiện rõ tỷ lệ giữa chiều cao chân cột nhà sàn, dàn 5 ống phao chai nhựa đặt đối xứng dưới đáy sàn giúp cân bằng trọng tâm, cầu thang lên xuống và mái nhọn thoát nước mưa.",
+                    s1: "• Chiều cao tổng thể mô hình: <strong>28 cm</strong>",
+                    s2: "• Khoảng sáng gầm nhà sàn: <strong>8 cm</strong>",
+                    s3: "• Độ dốc mái thoát nước: <strong>40°</strong>"
+                },
+                side: {
+                    header: "GÓC CHIẾU: NHÌN TỪ BÊN (SIDE VIEW)",
+                    badge: "Góc nhìn 2/3: Nhìn từ bên",
+                    title: "Mặt cắt ngang & Hệ ống phao dọc",
+                    desc: "Cho thấy chiều dài thân chai nhựa chạy dọc dưới gầm sàn, tấm pin năng lượng mặt trời lắp nghiêng trên mái đón nắng tối ưu và độ vươn an toàn của cầu thang.",
+                    s1: "• Chiều sâu sàn nhà: <strong>24 cm</strong>",
+                    s2: "• Chiều dài ống phao chai nhựa: <strong>22 cm</strong>",
+                    s3: "• Góc nghiêng cầu thang: <strong>45° dễ di chuyển</strong>"
+                },
+                top: {
+                    header: "GÓC CHIẾU: NHÌN TỪ TRÊN (TOP VIEW)",
+                    badge: "Góc nhìn 3/3: Nhìn từ trên",
+                    title: "Mặt bằng tổng thể & Bố trí cảnh quan",
+                    desc: "Bố cục tổng thể gồm ngôi nhà ở vị trí trung tâm, hành lang quanh nhà, bể nước trên cao bên hông phải, cầu tạm dẫn ra thuyền cứu hộ và vành đai cây xanh chắn sóng.",
+                    s1: "• Kích thước đế mô hình: <strong>40 cm × 30 cm</strong>",
+                    s2: "• Diện tích sàn sử dụng: <strong>26 cm × 24 cm</strong>",
+                    s3: "• Khu vực neo thuyền cứu hộ: <strong>Gần cầu tạm</strong>"
+                }
+            };
+
+            const cadViewBtns = document.querySelectorAll(".cad-view-btn");
+            const cadSvgFront = document.getElementById("cadSvgFront");
+            const cadSvgSide = document.getElementById("cadSvgSide");
+            const cadSvgTop = document.getElementById("cadSvgTop");
+            const cadHeaderTitle = document.getElementById("cadHeaderTitle");
+            const cadViewBadge = document.getElementById("cadViewBadge");
+            const cadViewTitle = document.getElementById("cadViewTitle");
+            const cadViewDesc = document.getElementById("cadViewDesc");
+            const cadSpec1 = document.getElementById("cadSpec1");
+            const cadSpec2 = document.getElementById("cadSpec2");
+            const cadSpec3 = document.getElementById("cadSpec3");
+            const toggleCadDimBtn = document.getElementById("toggleCadDimBtn");
+
+            cadViewBtns.forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    const view = btn.getAttribute("data-cad-view");
+                    const d = cadViewsData[view];
+                    if (!d) return;
+
+                    cadSvgFront.classList.toggle("hidden", view !== "front");
+                    cadSvgSide.classList.toggle("hidden", view !== "side");
+                    cadSvgTop.classList.toggle("hidden", view !== "top");
+
+                    cadHeaderTitle.textContent = d.header;
+                    cadViewBadge.textContent = d.badge;
+                    cadViewTitle.textContent = d.title;
+                    cadViewDesc.textContent = d.desc;
+                    cadSpec1.innerHTML = d.s1;
+                    cadSpec2.innerHTML = d.s2;
+                    cadSpec3.innerHTML = d.s3;
+
+                    cadViewBtns.forEach(function (b) {
+                        if (b === btn) {
+                            b.className = "cad-view-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-sky-600 text-white shadow-sm transition-all";
+                        } else {
+                            b.className = "cad-view-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-sky-50 transition-all";
+                        }
+                    });
+                });
+            });
+
+            let showCadDims = true;
+            toggleCadDimBtn.addEventListener("click", function () {
+                showCadDims = !showCadDims;
+                document.querySelectorAll(".cad-dim-group").forEach(function (g) {
+                    g.style.display = showCadDims ? "block" : "none";
+                });
+            });
+
+            // 4. Xử lý Quy trình 5 bước chế tạo tương tác
+            const stepsData = {
+                "1": {
+                    badge: "BƯỚC 1 / 5",
+                    title: "Làm nền và khung nhà (bìa carton, que gỗ)",
+                    desc: "Đo đạc kích thước theo bản vẽ, cắt tấm bìa carton cứng làm đế mô hình và sử dụng que gỗ/thanh tre dựng hệ thống cột trụ nhà sàn chịu lực vững chắc.",
+                    materials: "Bìa carton dày, que gỗ, thanh tre, thước kẻ, súng bắn keo nến.",
+                    qa: "Các cột trụ thẳng đứng, có chiều cao bằng nhau và bám chắc vào tấm nền.",
+                    icon: "🏗️",
+                    progress: 20
+                },
+                "2": {
+                    badge: "BƯỚC 2 / 5",
+                    title: "Làm sàn, tường, mái và cầu thang",
+                    desc: "Lắp tấm sàn nhà trên cao, dựng 4 vách tường có cửa chính & cửa sổ thông thoáng, lợp mái dốc thoát nước mưa và gắn cầu thang dẫn lên hiên nhà.",
+                    materials: "Bìa carton cắt theo mẫu, que tre làm bậc thang, giấy màu lợp mái.",
+                    qa: "Mái nhà cân đối, độ dốc đều hai bên, cầu thang chắc chắn và đúng tỷ lệ.",
+                    icon: "🏠",
+                    progress: 40
+                },
+                "3": {
+                    badge: "BƯỚC 3 / 5",
+                    title: "Thêm các giải pháp chống lũ (phao, cột cao, bể chứa, thuyền...)",
+                    desc: "Gắn cố định hệ thống phao bằng vỏ chai nhựa và mút xốp dưới gầm sàn; lắp đặt bể chứa nước sạch trên cao và chế tạo thuyền cứu hộ dân dụng.",
+                    materials: "Vỏ chai nhựa đậy kín nắp, mút xốp, hộp nhựa làm bể nước, bìa làm thuyền.",
+                    qa: "Các chai nhựa kín khí 100%, phân bổ đều dưới đáy sàn để nhà không bị nghiêng khi nổi.",
+                    icon: "🛟",
+                    progress: 60
+                },
+                "4": {
+                    badge: "BƯỚC 4 / 5",
+                    title: "Trang trí cảnh quan (cây xanh, hàng rào, biển báo)",
+                    desc: "Sơn màu mặt nước xung quanh, trồng thêm cây xanh mô hình, lắp hàng rào bảo vệ và gắn tấm pin mặt trời trên mái nhà.",
+                    materials: "Giấy màu, sơn acrylic xanh, cây nhựa mô hình, que gỗ nhỏ.",
+                    qa: "Màu sắc hài hòa, làm nổi bật khu vực mặt nước lũ và không gian sống an toàn.",
+                    icon: "🌳",
+                    progress: 80
+                },
+                "5": {
+                    badge: "BƯỚC 5 / 5",
+                    title: "Hoàn thiện mô hình và gắn bảng tuyên truyền an toàn",
+                    desc: "Kiểm tra tổng thể độ bền của toàn bộ mô hình, gắn bảng khẩu hiệu “Chung tay phòng, tránh lũ lụt vì cuộc sống an toàn” ở mặt trước.",
+                    materials: "Giấy bìa cứng làm bảng nhắc khuyến cáo an toàn, trụ gỗ gắn biển.",
+                    qa: "Mô hình hoàn chỉnh, thẩm mỹ cao, truyền tải rõ nét thông điệp nhân văn của dự án STEM.",
+                    icon: "🪧",
+                    progress: 100
+                }
+            };
+
+            const stepTabBtns = document.querySelectorAll(".step-tab-btn");
+            const stepDetailBadge = document.getElementById("stepDetailBadge");
+            const stepDetailTitle = document.getElementById("stepDetailTitle");
+            const stepDetailDesc = document.getElementById("stepDetailDesc");
+            const stepDetailMaterials = document.getElementById("stepDetailMaterials");
+            const stepDetailQA = document.getElementById("stepDetailQA");
+            const stepVisualIcon = document.getElementById("stepVisualIcon");
+            const stepProgressBar = document.getElementById("stepProgressBar");
+            const stepProgressText = document.getElementById("stepProgressText");
+
+            stepTabBtns.forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    const stepId = btn.getAttribute("data-step");
+                    const s = stepsData[stepId];
+                    if (!s) return;
+
+                    stepDetailBadge.textContent = s.badge;
+                    stepDetailTitle.textContent = s.title;
+                    stepDetailDesc.textContent = s.desc;
+                    stepDetailMaterials.textContent = s.materials;
+                    stepDetailQA.textContent = s.qa;
+                    stepVisualIcon.textContent = s.icon;
+                    stepProgressBar.style.width = s.progress + "%";
+                    stepProgressText.textContent = "Hoàn thành " + s.progress + "%";
+
+                    stepTabBtns.forEach(function (b) {
+                        const isCurrent = b === btn;
+                        const spanTop = b.querySelector("span:first-child");
+                        const extraCol = b.getAttribute("data-step") === "5" ? " col-span-2 sm:col-span-1" : "";
+                        if (isCurrent) {
+                            b.className = "step-tab-btn p-3 rounded-2xl border-2 border-sky-600 bg-sky-600 text-white text-left transition-all" + extraCol;
+                            spanTop.className = "text-[11px] font-extrabold uppercase opacity-85 block";
+                        } else {
+                            b.className = "step-tab-btn p-3 rounded-2xl border border-slate-200 bg-slate-50 hover:border-sky-300 text-slate-700 text-left transition-all" + extraCol;
+                            spanTop.className = "text-[11px] font-extrabold uppercase text-sky-600 block";
+                        }
+                    });
+                });
+            });
+
+            // 5. Công cụ 4.1: Thanh trượt Mô phỏng Mực nước lũ (Chân cột 1.2m)
+            const floodSlider = document.getElementById("floodRangeSlider");
+            const waterLayer = document.getElementById("waterLayer");
+            const floatingHouseGroup = document.getElementById("floatingHouseGroup");
+            const waterLevelValue = document.getElementById("waterLevelValue");
+            const houseFloorHeightValue = document.getElementById("houseFloorHeightValue");
+            const pontoonStateValue = document.getElementById("pontoonStateValue");
+            const pontoonSubText = document.getElementById("pontoonSubText");
+            const simStatusDot = document.getElementById("simStatusDot");
+            const simStatusBadgeText = document.getElementById("simStatusBadgeText");
+            const floodAdviceBox = document.getElementById("floodAdviceBox");
+            const floodAdviceText = document.getElementById("floodAdviceText");
+            const presetButtons = document.querySelectorAll(".water-preset-btn");
+
+            function updateFloodSimulation(rawLevel) {
+                const waterMeters = parseFloat(rawLevel);
+                const pxPerMeter = 40;
+                const waterHeightPx = Math.round(waterMeters * pxPerMeter);
+
+                const baseStiltMeters = 1.2;
+                const floatingOffsetMeters = waterMeters > baseStiltMeters ? (waterMeters - baseStiltMeters) : 0;
+                const houseBottomPx = 32 + Math.round((baseStiltMeters + floatingOffsetMeters) * pxPerMeter);
+                const floorHeightMeters = (baseStiltMeters + floatingOffsetMeters).toFixed(1);
+
+                waterLayer.style.height = waterHeightPx + "px";
+                floatingHouseGroup.style.bottom = houseBottomPx + "px";
+
+                waterLevelValue.textContent = waterMeters.toFixed(1) + " m";
+                houseFloorHeightValue.textContent = floorHeightMeters + " m";
+
+                if (waterMeters === 0) {
+                    simStatusDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-500";
+                    simStatusBadgeText.textContent = "Mực nước: 0.0m (Đứng trên cột trụ)";
+                    pontoonStateValue.textContent = "Đứng trên cột trụ";
+                    pontoonSubText.textContent = "Mực nước 0.0m ≤ 1.2m";
+                    floodAdviceBox.className = "p-4 rounded-2xl bg-teal-50 border border-teal-200 text-xs sm:text-sm text-teal-950 space-y-1";
+                    floodAdviceText.textContent = "Nước chưa ngập. Ngôi nhà đặt vững chãi trên hệ khung cột nhà sàn cao 1.2m khô ráo, thông thoáng.";
+                } else if (waterMeters <= 1.2) {
+                    simStatusDot.className = "w-2.5 h-2.5 rounded-full bg-sky-500";
+                    simStatusBadgeText.textContent = "Ngập dưới chân cột (" + waterMeters.toFixed(1) + "m)";
+                    pontoonStateValue.textContent = "Đứng vững trên cột trụ";
+                    pontoonSubText.textContent = "Chưa vượt đỉnh cột 1.2m";
+                    floodAdviceBox.className = "p-4 rounded-2xl bg-sky-50 border border-sky-200 text-xs sm:text-sm text-sky-950 space-y-1";
+                    floodAdviceText.textContent = "Mực nước (" + waterMeters.toFixed(1) + "m) vẫn thấp hơn chiều cao cột nhà sàn (1.2m). Sàn sinh hoạt hoàn toàn cách ly với mặt nước.";
+                } else if (waterMeters <= 2.5) {
+                    simStatusDot.className = "w-2.5 h-2.5 rounded-full bg-amber-500";
+                    simStatusBadgeText.textContent = "Đang nổi trên phao (" + waterMeters.toFixed(1) + "m)";
+                    pontoonStateValue.textContent = "Đang nổi trên hệ phao";
+                    pontoonSubText.textContent = "Nâng cao thêm +" + floatingOffsetMeters.toFixed(1) + "m";
+                    floodAdviceBox.className = "p-4 rounded-2xl bg-amber-50 border border-amber-200 text-xs sm:text-sm text-amber-950 space-y-1";
+                    floodAdviceText.textContent = "Nước lũ đã vượt mốc 1.2m! Hệ thống phao chai nhựa dưới gầm sàn tự động kích hoạt lực đẩy Ác-si-mét nâng toàn bộ ngôi nhà và thuyền cứu hộ nổi lên.";
+                } else {
+                    simStatusDot.className = "w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping";
+                    simStatusBadgeText.textContent = "Lũ lịch sử – Nổi tối đa (" + waterMeters.toFixed(1) + "m)";
+                    pontoonStateValue.textContent = "Đang nổi trên phao (Tối đa)";
+                    pontoonSubText.textContent = "Sàn nhà ở độ cao " + floorHeightMeters + "m";
+                    floodAdviceBox.className = "p-4 rounded-2xl bg-rose-50 border border-rose-200 text-xs sm:text-sm text-rose-950 space-y-1";
+                    floodAdviceText.textContent = "Mực nước lũ rất cao (" + waterMeters.toFixed(1) + "m)! Nhờ dàn phao chai nhựa và cột định vị chống trôi, ngôi nhà vẫn nổi an toàn ở độ cao " + floorHeightMeters + "m.";
+                }
+
+                presetButtons.forEach(function (btn) {
+                    const presetVal = parseFloat(btn.getAttribute("data-water-preset"));
+                    if (Math.abs(presetVal - waterMeters) < 0.05) {
+                        btn.className = "water-preset-btn px-2.5 py-2 rounded-xl text-xs font-bold bg-sky-600 text-white border border-sky-600 transition-all";
+                    } else {
+                        btn.className = "water-preset-btn px-2.5 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:border-sky-300 transition-all";
+                    }
+                });
+            }
+
+            floodSlider.addEventListener("input", function (e) {
+                updateFloodSimulation(e.target.value);
+            });
+
+            presetButtons.forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    const targetVal = btn.getAttribute("data-water-preset");
+                    floodSlider.value = targetVal;
+                    updateFloodSimulation(targetVal);
+                });
+            });
+
+            // 6. Công cụ 4.2: Bảng tính Lực đẩy Ác-si-mét (F_A = d * V)
+            const bottleCountInput = document.getElementById("bottleCountInput");
+            const bottleCountDisplay = document.getElementById("bottleCountDisplay");
+            const bottleVolBtns = document.querySelectorAll(".bottle-vol-btn");
+            const houseMassInput = document.getElementById("houseMassInput");
+            const houseMassDisplay = document.getElementById("houseMassDisplay");
+            const calcTotalVolume = document.getElementById("calcTotalVolume");
+            const calcBuoyantForce = document.getElementById("calcBuoyantForce");
+            const calcHouseWeight = document.getElementById("calcHouseWeight");
+            const calcSafetyFactor = document.getElementById("calcSafetyFactor");
+            const calcSubmergedPercent = document.getElementById("calcSubmergedPercent");
+            const calcLoadBar = document.getElementById("calcLoadBar");
+            const calcResultBanner = document.getElementById("calcResultBanner");
+            const calcResultTitle = document.getElementById("calcResultTitle");
+            const calcResultDetail = document.getElementById("calcResultDetail");
+
+            let currentBottleVolMl = 500;
+
+            function updateArchimedesCalculator() {
+                const count = parseInt(bottleCountInput.value, 10);
+                const massGram = parseInt(houseMassInput.value, 10);
+                const massKg = massGram / 1000;
+
+                bottleCountDisplay.textContent = count + " chai";
+                houseMassDisplay.textContent = massGram + " g (" + massKg.toFixed(1) + " kg)";
+
+                const totalLiters = (count * currentBottleVolMl) / 1000;
+                const totalM3 = totalLiters / 1000;
+                const buoyantForceN = totalM3 * 10000;
+                const houseWeightN = massKg * 10;
+                const safetyFactor = buoyantForceN / houseWeightN;
+
+                calcTotalVolume.textContent = totalLiters.toFixed(2) + " L";
+                calcBuoyantForce.textContent = buoyantForceN.toFixed(1) + " N";
+                calcHouseWeight.textContent = houseWeightN.toFixed(1) + " N";
+                calcSafetyFactor.textContent = safetyFactor.toFixed(1) + "x";
+
+                const ratioPercent = Math.round((houseWeightN / buoyantForceN) * 100);
+                const clampedPercent = Math.min(100, ratioPercent);
+                calcLoadBar.style.width = clampedPercent + "%";
+
+                if (safetyFactor >= 1.35) {
+                    calcSubmergedPercent.textContent = ratioPercent + "%";
+                    calcLoadBar.className = "h-full bg-teal-500 rounded-full transition-all duration-300";
+                    calcResultBanner.className = "p-4 rounded-2xl bg-teal-50 border border-teal-200 text-xs space-y-1";
+                    calcResultTitle.className = "font-bold text-teal-900";
+                    calcResultTitle.textContent = "✅ KẾT LUẬN: NỔI AN TOÀN TUYỆT ĐỐI (Hệ số an toàn " + safetyFactor.toFixed(1) + "x)";
+                    calcResultDetail.textContent = "Lực đẩy Ác-si-mét (" + buoyantForceN.toFixed(1) + " N) lớn hơn nhiều so với trọng lượng nhà (" + houseWeightN.toFixed(1) + " N), đảm bảo sàn nhà luôn nổi cao.";
+                } else if (safetyFactor >= 1.0) {
+                    calcSubmergedPercent.textContent = ratioPercent + "% (Sát ngưỡng)";
+                    calcLoadBar.className = "h-full bg-amber-500 rounded-full transition-all duration-300";
+                    calcResultBanner.className = "p-4 rounded-2xl bg-amber-50 border border-amber-200 text-xs space-y-1";
+                    calcResultTitle.className = "font-bold text-amber-900";
+                    calcResultTitle.textContent = "⚠️ KẾT LUẬN: NHÀ VẪN NỔI NHƯNG CẦN THÊM PHAO DỰ PHÒNG (Hệ số " + safetyFactor.toFixed(1) + "x)";
+                    calcResultDetail.textContent = "Phao đã chìm " + ratioPercent + "% thể tích. Nên tăng thêm số lượng vỏ chai nhựa để chống nghiêng lật khi có sóng.";
+                } else {
+                    calcSubmergedPercent.textContent = "Quá tải (" + ratioPercent + "%)";
+                    calcLoadBar.className = "h-full bg-rose-600 rounded-full transition-all duration-300";
+                    calcResultBanner.className = "p-4 rounded-2xl bg-rose-50 border border-rose-200 text-xs space-y-1";
+                    calcResultTitle.className = "font-bold text-rose-900";
+                    calcResultTitle.textContent = "❌ CẢNH BÁO: CẦN THÊM PHAO NGAY (P > F_A, Hệ số " + safetyFactor.toFixed(2) + "x)";
+                    calcResultDetail.textContent = "Trọng lượng nhà (" + houseWeightN.toFixed(1) + " N) đang vượt quá lực đẩy phao (" + buoyantForceN.toFixed(1) + " N). Hãy tăng số chai nhựa hoặc chọn chai 1500ml.";
+                }
+            }
+
+            bottleCountInput.addEventListener("input", updateArchimedesCalculator);
+            houseMassInput.addEventListener("input", updateArchimedesCalculator);
+            bottleVolBtns.forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    currentBottleVolMl = parseInt(btn.getAttribute("data-bottle-vol"), 10);
+                    bottleVolBtns.forEach(function (b) {
+                        if (b === btn) {
+                            b.className = "bottle-vol-btn py-2 px-2 rounded-xl text-xs font-bold border border-sky-600 bg-sky-600 text-white transition-all";
+                        } else {
+                            b.className = "bottle-vol-btn py-2 px-2 rounded-xl text-xs font-bold border border-slate-200 bg-white text-slate-700 hover:border-sky-300 transition-all";
+                        }
+                    });
+                    updateArchimedesCalculator();
+                });
+            });
+
+            // 7. Công cụ 4.3 (Mới): Mô phỏng Tự cung tự cấp Nước sạch & Năng lượng khi cô lập
+            const familyMembersInput = document.getElementById("familyMembersInput");
+            const familyMembersDisplay = document.getElementById("familyMembersDisplay");
+            const isolationDaysInput = document.getElementById("isolationDaysInput");
+            const isolationDaysDisplay = document.getElementById("isolationDaysDisplay");
+            const simWaterNeeded = document.getElementById("simWaterNeeded");
+            const simRainHarvested = document.getElementById("simRainHarvested");
+            const simSolarHours = document.getElementById("simSolarHours");
+            const simTotalWaterAvailable = document.getElementById("simTotalWaterAvailable");
+            const simAutonomyBar = document.getElementById("simAutonomyBar");
+            const simAutonomyBanner = document.getElementById("simAutonomyBanner");
+            const simAutonomyTitle = document.getElementById("simAutonomyTitle");
+            const simAutonomyDesc = document.getElementById("simAutonomyDesc");
+
+            function updateAutonomySimulator() {
+                const members = parseInt(familyMembersInput.value, 10);
+                const days = parseInt(isolationDaysInput.value, 10);
+
+                familyMembersDisplay.textContent = members + " người";
+                isolationDaysDisplay.textContent = days + " ngày";
+
+                const waterNeededLiters = members * days * 5;
+                const baseTankCapacity = 120;
+                const rainHarvestedLiters = days * 15;
+                const totalAvailable = baseTankCapacity + rainHarvestedLiters;
+                const solarHoursPerNight = Math.max(5, 11 - members);
+
+                simWaterNeeded.textContent = waterNeededLiters + " Lít";
+                simRainHarvested.textContent = "+" + rainHarvestedLiters + " Lít";
+                simSolarHours.textContent = solarHoursPerNight + " giờ/đêm";
+                simTotalWaterAvailable.textContent = totalAvailable + " Lít";
+
+                const coveragePercent = Math.min(100, Math.round((totalAvailable / waterNeededLiters) * 100));
+                simAutonomyBar.style.width = coveragePercent + "%";
+
+                if (totalAvailable >= waterNeededLiters) {
+                    const surplus = totalAvailable - waterNeededLiters;
+                    simAutonomyBar.className = "h-full bg-teal-500 rounded-full transition-all duration-300";
+                    simAutonomyBanner.className = "p-4 rounded-2xl bg-teal-50 border border-teal-200 text-xs space-y-1";
+                    simAutonomyTitle.className = "font-bold text-teal-900";
+                    simAutonomyTitle.textContent = "✅ ĐẢM BẢO 100% NHU CẦU SINH TỒN TRONG " + days + " NGÀY (Dư " + surplus + " Lít nước sạch)";
+                    simAutonomyDesc.textContent = "Bể nước trên cao (120L) cộng với lượng nước mưa thu gom từ mái dốc (+" + rainHarvestedLiters + "L) đáp ứng hoàn toàn nhu cầu cho " + members + " người.";
+                } else {
+                    const deficit = waterNeededLiters - totalAvailable;
+                    simAutonomyBar.className = "h-full bg-amber-500 rounded-full transition-all duration-300";
+                    simAutonomyBanner.className = "p-4 rounded-2xl bg-amber-50 border border-amber-200 text-xs space-y-1";
+                    simAutonomyTitle.className = "font-bold text-amber-900";
+                    simAutonomyTitle.textContent = "⚠️ ĐÁP ỨNG " + coveragePercent + "% NHU CẦU – CẦN TIẾT KIỆM NƯỚC (Thiếu " + deficit + " Lít)";
+                    simAutonomyDesc.textContent = "Thời gian cô lập kéo dài (" + days + " ngày) với " + members + " thành viên. Gia đình cần ưu tiên nước cho ăn uống và dùng thuyền cứu hộ tiếp nhận thêm nhu yếu phẩm.";
+                }
+            }
+
+            familyMembersInput.addEventListener("input", updateAutonomySimulator);
+            isolationDaysInput.addEventListener("input", updateAutonomySimulator);
+
+            // 8. Xử lý Góc Thuyết Trình 6 Phần (Tổ 4 – Lớp 9A5)
+            const presCards = document.querySelectorAll(".pres-card");
+            presCards.forEach(function (card) {
+                card.addEventListener("click", function () {
+                    presCards.forEach(function (c) {
+                        const badge = c.querySelector("span:first-child");
+                        if (c === card) {
+                            c.className = "pres-card cursor-pointer p-5 rounded-2xl border-2 border-sky-600 bg-sky-50/70 transition-all space-y-2 shadow-sm";
+                            badge.className = "px-2.5 py-0.5 rounded-full bg-sky-600 text-white font-bold text-xs";
+                        } else {
+                            c.className = "pres-card cursor-pointer p-5 rounded-2xl border border-slate-200 bg-slate-50/60 hover:border-sky-300 transition-all space-y-2";
+                            badge.className = "px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700 font-bold text-xs";
+                        }
+                    });
+                });
+            });
+
+            // 9. Xử lý Danh sách kiểm tra "Túi đồ khẩn cấp" (Emergency Checklist)
+            const checkboxes = document.querySelectorAll(".emergency-checkbox");
+            const checklistCounterText = document.getElementById("checklistCounterText");
+            const checklistStatusBadge = document.getElementById("checklistStatusBadge");
+            const checklistProgressBar = document.getElementById("checklistProgressBar");
+            const checkAllItemsBtn = document.getElementById("checkAllItemsBtn");
+            const resetChecklistBtn = document.getElementById("resetChecklistBtn");
+
+            function updateChecklistProgress() {
+                const total = checkboxes.length;
+                let checkedCount = 0;
+
+                checkboxes.forEach(function (box) {
+                    const parentCard = box.closest(".checklist-card");
+                    if (box.checked) {
+                        checkedCount++;
+                        parentCard.classList.add("bg-teal-50/70", "border-teal-300");
+                        parentCard.classList.remove("bg-white", "border-slate-200");
+                    } else {
+                        parentCard.classList.remove("bg-teal-50/70", "border-teal-300");
+                        parentCard.classList.add("bg-white", "border-slate-200");
+                    }
+                });
+
+                const percent = Math.round((checkedCount / total) * 100);
+                checklistCounterText.textContent = "Đã chuẩn bị: " + checkedCount + "/" + total + " vật dụng thiết yếu (" + percent + "%)";
+                checklistProgressBar.style.width = percent + "%";
+
+                if (checkedCount === 0) {
+                    checklistStatusBadge.textContent = "Cần chuẩn bị thêm";
+                    checklistStatusBadge.className = "px-3 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800";
+                } else if (checkedCount < total) {
+                    checklistStatusBadge.textContent = "Đang hoàn thiện túi đồ";
+                    checklistStatusBadge.className = "px-3 py-0.5 rounded-full text-xs font-bold bg-sky-100 text-sky-800";
+                } else {
+                    checklistStatusBadge.textContent = "✓ Đã sẵn sàng ứng phó lũ!";
+                    checklistStatusBadge.className = "px-3 py-0.5 rounded-full text-xs font-bold bg-teal-100 text-teal-800";
+                }
+            }
+
+            checkboxes.forEach(function (box) {
+                box.addEventListener("change", updateChecklistProgress);
+            });
+
+            checkAllItemsBtn.addEventListener("click", function () {
+                checkboxes.forEach(function (box) { box.checked = true; });
+                updateChecklistProgress();
+            });
+
+            resetChecklistBtn.addEventListener("click", function () {
+                checkboxes.forEach(function (box) { box.checked = false; });
+                updateChecklistProgress();
+            });
+
+            // 10. Xử lý Mini-Quiz 3 câu hỏi trắc nghiệm ứng phó lũ lụt
+            const quizExplanations = {
+                "1": "Đúng! Ngắt cầu dao điện và khóa bình gas ngay lập tức giúp phòng tránh nguy cơ điện giật và cháy nổ khi nước tràn vào nhà.",
+                "2": "Chính xác! Bể nước đặt trên cao giúp nguồn nước sạch không bị hòa lẫn với nước lũ bẩn và tạo áp lực chảy tự nhiên.",
+                "3": "Hoàn toàn chính xác! Nước chảy xiết qua ngầm tràn rất nguy hiểm, tuyệt đối không cố băng qua."
+            };
+            const quizCards = document.querySelectorAll(".quiz-card");
+            const quizScoreBadge = document.getElementById("quizScoreBadge");
+            const resetQuizBtn = document.getElementById("resetQuizBtn");
+            const quizState = {};
+
+            function updateQuizScore() {
+                let score = 0;
+                Object.keys(quizState).forEach(function (k) {
+                    if (quizState[k]) score++;
+                });
+                quizScoreBadge.textContent = "Điểm số: " + score + "/3 câu đúng";
+            }
+
+            quizCards.forEach(function (card) {
+                const qId = card.getAttribute("data-question");
+                const correctOpt = card.getAttribute("data-correct");
+                const options = card.querySelectorAll(".quiz-option");
+                const feedback = card.querySelector(".quiz-feedback");
+
+                options.forEach(function (optBtn) {
+                    optBtn.addEventListener("click", function () {
+                        const chosen = optBtn.getAttribute("data-option");
+                        const isRight = chosen === correctOpt;
+                        quizState[qId] = isRight;
+
+                        options.forEach(function (b) {
+                            b.className = "quiz-option w-full text-left p-2.5 rounded-xl text-xs sm:text-sm bg-white border border-slate-200 transition-all opacity-75";
+                        });
+
+                        if (isRight) {
+                            optBtn.className = "quiz-option w-full text-left p-2.5 rounded-xl text-xs sm:text-sm bg-teal-50 border-2 border-teal-500 text-teal-950 font-semibold transition-all";
+                            feedback.className = "quiz-feedback text-xs p-3 rounded-xl font-medium bg-teal-50 text-teal-800 border border-teal-200 block";
+                            feedback.textContent = "✓ " + quizExplanations[qId];
+                        } else {
+                            optBtn.className = "quiz-option w-full text-left p-2.5 rounded-xl text-xs sm:text-sm bg-rose-50 border-2 border-rose-400 text-rose-950 font-semibold transition-all";
+                            feedback.className = "quiz-feedback text-xs p-3 rounded-xl font-medium bg-rose-50 text-rose-800 border border-rose-200 block";
+                            feedback.textContent = "✗ Chưa chính xác. Hãy thử chọn lại đáp án an toàn nhất nhé!";
+                        }
+                        updateQuizScore();
+                    });
+                });
+            });
+
+            resetQuizBtn.addEventListener("click", function () {
+                Object.keys(quizState).forEach(function (k) { delete quizState[k]; });
+                quizCards.forEach(function (card) {
+                    const options = card.querySelectorAll(".quiz-option");
+                    const feedback = card.querySelector(".quiz-feedback");
+                    options.forEach(function (b) {
+                        b.className = "quiz-option w-full text-left p-2.5 rounded-xl text-xs sm:text-sm bg-white border border-slate-200 hover:border-sky-400 transition-all";
+                    });
+                    feedback.className = "quiz-feedback hidden text-xs p-3 rounded-xl font-medium";
+                });
+                updateQuizScore();
+            });
+        });
+    </script>
+
+</body>
+</html>
